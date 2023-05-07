@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// enum Result {
+//   WON
+//   LOST
+// }
+
+model User {
+  id            String   @id @default(uuid())
+  username      String   @unique
+  email         String   @unique
+  summary       String?
+  balance       Decimal  @default(0)
+  password_hash String
+  created_at    DateTime @default(now())
+  Bet           Bet[]
+
+  @@map("users")
+}
+
+model Bet {
+  id      String  @id @default(uuid())
+  value   Decimal
+  result  Boolean // Prisma com SQLite não suporta ENUM's, então, TRUE: Vitória | FALSE: Derrota
+  user    User    @relation(fields: [user_id], references: [id])
+  user_id String
+
+  @@map("bets")
+}
