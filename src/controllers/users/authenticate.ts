@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { z } from "zod";
 import { prisma } from "../../lib/prisma";
 import { compare } from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export async function authenticate(
     req: Request,
@@ -30,5 +31,9 @@ export async function authenticate(
         return res.status(401).json({ message: "Invalid credentials." });
     }
 
-    return res.status(200).json({ message: "Successfully authenticated" });
+    const token = jwt.sign({ id: user.id }, "secret", { expiresIn: "1d" });
+
+    return res
+        .status(200)
+        .json({ message: "Successfully authenticated", token });
 }
