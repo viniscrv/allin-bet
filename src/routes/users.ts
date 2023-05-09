@@ -8,4 +8,5 @@ export const usersRoutes = Router();
 
 usersRoutes.post("/register", register);
 usersRoutes.post("/login", authenticate);
-usersRoutes.get("/:username", verifyJwt, getData)
+
+usersRoutes.get("/:username", verifyJwt, getData);
