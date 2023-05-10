@@ -16,7 +16,7 @@ export async function getData(req: Request, res: Response): Promise<Response> {
             return res.status(404).json({ message: "User not found" });
         }
 
-        const userId = req.userId;
+        const { userId } = req;
         // searching user by id
         const user = await prisma.user.findUnique({
             where: { id: userId },
