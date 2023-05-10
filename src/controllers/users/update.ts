@@ -26,7 +26,7 @@ export async function update(req: Request,res: Response): Promise<Response> {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // updating data
+        // update data
         const user = await prisma.user.update({
           where: {
             id: userId,
