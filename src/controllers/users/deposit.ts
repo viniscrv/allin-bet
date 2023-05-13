@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { prisma } from "../../lib/prisma";
-import { Prisma } from "@prisma/client";
+import { updateUserBalance } from "../../utils/update-user-balance";
 
 export async function deposit(req: Request, res: Response): Promise<Response> {
     const depositBodySchema = z.object({
@@ -18,28 +17,9 @@ export async function deposit(req: Request, res: Response): Promise<Response> {
 
     const id = req.userId;
 
-    const userBalance = await prisma.user.findUnique({
-        where: {
-            id,
-        },
-        select: {
-            balance: true,
-        },
-    });
-
-    const balance = userBalance?.balance;
-    const updatedBalance = Number(balance) + value;
-
-    const updatedUserBalance = await prisma.user.update({
-        where: {
-            id,
-        },
-        data: {
-            balance: new Prisma.Decimal(updatedBalance),
-        },
-    });
+    const updatedBalance = await updateUserBalance(id, value);
 
     return res
         .status(200)
-        .json({ message: "Successful purchase", updatedUserBalance });
+        .json({ message: "Successful purchase", updatedBalance });
 }
