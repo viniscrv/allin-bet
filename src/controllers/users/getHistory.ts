@@ -14,8 +14,9 @@ export async function getHistory(
         select: {
             Bet: {
                 select: {
+                    isVictory: true,
                     value: true,
-                    result: true,
+                    created_at: true,
                 },
             },
         },
