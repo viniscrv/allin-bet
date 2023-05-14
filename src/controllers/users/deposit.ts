@@ -14,6 +14,10 @@ export async function deposit(req: Request, res: Response): Promise<Response> {
         return res.status(403).json({ message: "Invalid card number" });
     }
 
+    if (value <= 0) {
+        return res.status(403).json({ message: "Invalid value" });
+    }
+
     const id = req.userId;
 
     const updatedBalance = await updateUserBalance(id, value);

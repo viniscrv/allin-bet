@@ -11,9 +11,11 @@ export async function deleteUser(req: Request, res: Response) {
     });
 
     if (betCount > 0) {
-        return res
-            .status(400)
-            .json({ message: "User has bets and cannot be deleted." });
+        await prisma.bet.deleteMany({
+            where: {
+                user_id: userId,
+            },
+        });
     }
 
     await prisma.user.delete({

@@ -5,9 +5,7 @@ import { prisma } from "../../../lib/prisma";
 
 export async function play(req: Request, res: Response): Promise<Response> {
     const playBodySchema = z.object({
-        color: z.enum(["yellow", "black"]).refine((colors) => {
-            return colors.toLowerCase();
-        }),
+        color: z.enum(["yellow", "black"]),
         value: z.number(),
     });
 
@@ -28,6 +26,10 @@ export async function play(req: Request, res: Response): Promise<Response> {
     }
 
     const userBalance = Number(user.balance);
+
+    if (value <= 0) {
+        return res.status(403).json({ message: "Invalid value" });
+    }
 
     if (value > userBalance) {
         return res.status(400).json({ message: "Insufficient balance" });
