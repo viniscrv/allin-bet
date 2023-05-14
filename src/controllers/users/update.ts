@@ -12,7 +12,6 @@ export async function update(req: Request, res: Response): Promise<Response> {
     const { username, email, password } = updateBodySchema.parse(req.body);
     const { userId } = req;
 
-    // update data
     const user = await prisma.user.update({
         where: {
             id: userId,

@@ -14,7 +14,6 @@ export async function play(req: Request, res: Response): Promise<Response> {
     const { color, value } = playBodySchema.parse(req.body);
     const id = req.userId;
 
-    // verificação do saldo do usuário
     const user = await prisma.user.findUnique({
         where: {
             id,
@@ -34,7 +33,6 @@ export async function play(req: Request, res: Response): Promise<Response> {
         return res.status(400).json({ message: "Insufficient balance" });
     }
 
-    // cria as cores e escolhe uma
     function getColor() {
         const randomNumber = Math.floor(Math.random() * 10) + 1;
 
@@ -48,7 +46,6 @@ export async function play(req: Request, res: Response): Promise<Response> {
         return randomColor;
     }
 
-    // verifica se as cores dão match e modifica o valor apostado
     function runGame() {
         const randomColor = getColor();
         let isVictory;

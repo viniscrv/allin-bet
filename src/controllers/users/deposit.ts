@@ -11,7 +11,6 @@ export async function deposit(req: Request, res: Response): Promise<Response> {
     const { cardNumber, value } = depositBodySchema.parse(req.body);
 
     if (cardNumber !== "4242.4242.4242.4242") {
-        // O ideal seria o número válido estar dentro das váriaveis de ambiente
         return res.status(403).json({ message: "Invalid card number" });
     }
 
