@@ -14,8 +14,8 @@ usersRoutes.post("/register", register);
 usersRoutes.post("/login", authenticate);
 
 // Authenticated
-usersRoutes.get("/:username", verifyJwt, getData);
-usersRoutes.get("/:username/history", verifyJwt, getHistory);
-usersRoutes.put("/:username/update", verifyJwt, update);
-usersRoutes.delete("/:username/delete", verifyJwt, deleteUser);
-usersRoutes.patch("/:username/deposit", verifyJwt, deposit);
+usersRoutes.get("/me", verifyJwt, getData);
+usersRoutes.get("/history", verifyJwt, getHistory);
+usersRoutes.put("/edit", verifyJwt, update);
+usersRoutes.delete("/delete", verifyJwt, deleteUser);
+usersRoutes.patch("/deposit", verifyJwt, deposit);

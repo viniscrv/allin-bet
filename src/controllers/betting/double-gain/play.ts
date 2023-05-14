@@ -16,21 +16,23 @@ export async function play(req: Request, res: Response): Promise<Response> {
 
     // verificação do saldo do usuário
     const user = await prisma.user.findUnique({
-        where: { id },
-        select: { balance: true },
+        where: {
+            id,
+        },
+        select: {
+            balance: true,
+        },
     });
-    
+
     if (!user) {
         return res.status(404).json({ message: "User not found" });
     }
-    
+
     const userBalance = Number(user.balance);
-    
+
     if (value > userBalance) {
         return res.status(400).json({ message: "Insufficient balance" });
     }
-
-
 
     // cria as cores e escolhe uma
     function getColor() {
@@ -63,7 +65,6 @@ export async function play(req: Request, res: Response): Promise<Response> {
         return { isVictory, handleValue };
     }
 
-
     const { isVictory, handleValue } = runGame();
 
     const updatedBalance = await updateUserBalance(id, handleValue);
@@ -76,24 +77,17 @@ export async function play(req: Request, res: Response): Promise<Response> {
         },
     });
 
-    const bet = value;
-    const returned = handleValue;
-
     if (!isVictory) {
         return res.status(200).json({
-            message: `Unfortunately you didn't win this time.`,
-            bet,
-            returned,
+            message: "Unfortunately you didn't win this time",
+            losses: handleValue,
             updatedBalance,
         });
     }
 
-    return res
-        .status(200)
-        .json({ 
-            message: `Congratulations, you have won.`,
-            bet,
-            returned,
-            updatedBalance
-        });
+    return res.status(200).json({
+        message: "Congratulations, you have won",
+        gains: handleValue,
+        updatedBalance,
+    });
 }
