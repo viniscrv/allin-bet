@@ -8,7 +8,8 @@ export async function getData(req: Request, res: Response): Promise<Response> {
         select: {
             username: true,
             email: true,
-            created_at: true,
+            balance: true,
+            created_at: true
         },
     });
 
