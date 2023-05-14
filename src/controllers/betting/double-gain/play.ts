@@ -30,6 +30,9 @@ export async function play(req: Request, res: Response): Promise<Response> {
         return res.status(400).json({ message: "Insufficient balance" });
     }
 
+
+
+    // cria as cores e escolhe uma
     function getColor() {
         const randomNumber = Math.floor(Math.random() * 10) + 1;
 
@@ -43,6 +46,7 @@ export async function play(req: Request, res: Response): Promise<Response> {
         return randomColor;
     }
 
+    // verifica se as cores dão match e modifica o valor apostado
     function runGame() {
         const randomColor = getColor();
         let isVictory;
@@ -72,14 +76,24 @@ export async function play(req: Request, res: Response): Promise<Response> {
         },
     });
 
+    const bet = value;
+    const returned = handleValue;
+
     if (!isVictory) {
         return res.status(200).json({
-            message: "Unfortunately you didn't win this time",
+            message: `Unfortunately you didn't win this time.`,
+            bet,
+            returned,
             updatedBalance,
         });
     }
 
     return res
         .status(200)
-        .json({ message: "Congratulations, you have won", updatedBalance });
+        .json({ 
+            message: `Congratulations, you have won.`,
+            bet,
+            returned,
+            updatedBalance
+        });
 }
