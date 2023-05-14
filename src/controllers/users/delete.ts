@@ -18,7 +18,20 @@ export async function deleteUser(req: Request, res: Response) {
       return res.status(404).json({ message: "User not found." });
     }
 
-    // delete userj
+    // Verificar se o usuário possui apostas
+    const betCount = await prisma.bet.count({
+      where: {
+        user_id: userId,
+      },
+    });
+
+    if (betCount > 0) {
+      return res
+        .status(400)
+        .json({ message: "User has bets and cannot be deleted." });
+    }
+
+    // delete user
     await prisma.user.delete({
       where: {
         id: userId,
