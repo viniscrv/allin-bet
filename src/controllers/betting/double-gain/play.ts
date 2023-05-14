@@ -54,7 +54,7 @@ export async function play(req: Request, res: Response): Promise<Response> {
 
         if (color === randomColor) {
             isVictory = true;
-            handleValue = value * 2;
+            handleValue = value;
         } else {
             isVictory = false;
             handleValue = value * -1;
