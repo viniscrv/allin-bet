@@ -22,9 +22,9 @@ export const {
             white: "#DED9D9" // primary text
         },
         fontSizes: {
-            sm: "14px",
-            md: "18px",
-            lg: "22px"
+            sm: "16px",
+            md: "20px",
+            lg: "24px"
         }
     }
 });
