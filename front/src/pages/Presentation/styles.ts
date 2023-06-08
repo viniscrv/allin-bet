@@ -10,18 +10,22 @@ export const Container = styled("div", {
     alignItems: "center",
     justifyContent: "center",
     gap: ".5rem",
+    textAlign: "center",
 
+    h1: {
+        fontSize: "$lg2"
+    },
     p: {
         color: "$gray300",
         fontSize: "$md",
         fontWeight: "bold"
     },
     button: {
-        marginTop: 14,
+        marginTop: 16,
         backgroundColor: "$primary500",
         border: "none",
         borderRadius: 6,
-        padding: "18px 84px",
+        padding: "16px 84px",
         fontWeight: "bold",
         cursor: "pointer",
         fontSize: "$sm",

@@ -23,8 +23,11 @@ export const {
         },
         fontSizes: {
             sm: "16px",
-            md: "20px",
-            lg: "24px"
+            md: "18px",
+            lg: "20px",
+            lg2: "24px",
+            lg3: "28px",
+            lg4: "32px"
         }
     }
 });
