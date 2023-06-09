@@ -36,7 +36,7 @@ export const Container = styled("div", {
         },
 
         button: {
-            marginTop: 8,
+            margin: 8,
             backgroundColor: "$primary500",
             border: "none",
             borderRadius: 6,
