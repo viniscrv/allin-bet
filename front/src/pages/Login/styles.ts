@@ -48,8 +48,12 @@ export const Container = styled("div", {
             width: "min-content",
             alignSelf: "center",
 
-            "&:hover": {
+            "&:not([disabled]):hover": {
                 backgroundColor: "$primary400"
+            },
+
+            "&:disabled": {
+                opacity: "0.5"
             }
         }
     }
