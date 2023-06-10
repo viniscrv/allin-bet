@@ -1,8 +1,13 @@
 import { UserCircle, PencilCircle, ClockCounterClockwise, CreditCard, HandCoins, Coins, ArrowLeft } from "@phosphor-icons/react";
 import { Aside, Container, Content, Header } from "./styles";
 import { Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export function DefaultLayout() {
+
+    const { handleLogout } = useContext(AuthContext);
+
     return (
         <Container>
             <Header>
@@ -30,7 +35,7 @@ export function DefaultLayout() {
                             <li><Coins size={18} color="#8B8B8B"/>Double Gain</li>
                         </ul>
                     </nav>
-                    <span className="logout"><ArrowLeft size={18} color="#D94848"/>Sair</span>
+                    <span className="logout" onClick={handleLogout}><ArrowLeft size={18} color="#D94848"/>Sair</span>
                 </Aside>
                 <section>
                     <Outlet />

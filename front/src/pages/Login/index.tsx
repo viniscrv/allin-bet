@@ -13,7 +13,7 @@ const loginFormSchema = z.object({
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export function Login() {
-    const { handleLogin, authenticated } = useContext(AuthContext);
+    const { handleLogin } = useContext(AuthContext);
 
     const {
         register,
@@ -48,7 +48,6 @@ export function Login() {
                     Entrar
                 </button>
             </form>
-            {authenticated}
             <p>
                 Ainda não tem uma conta? <a href="#">Criar conta</a>
             </p>
