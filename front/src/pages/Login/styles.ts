@@ -35,8 +35,15 @@ export const Container = styled("div", {
             }
         },
 
+        ".credentials-error": {
+            color: "$red700",
+            fontSize: "$sm",
+            alignSelf: "start",
+            fontWeight: "normal"
+        },
+
         button: {
-            margin: 8,
+            marginBottom: 8,
             backgroundColor: "$primary500",
             border: "none",
             borderRadius: 6,

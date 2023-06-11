@@ -73,7 +73,7 @@ export const Aside = styled("aside", {
         }
     },
     ".logout": {
-        color: "#D94848",
+        color: "$red700",
         fontSize: "$md",
         cursor: "pointer",
         alignSelf: "center",

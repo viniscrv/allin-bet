@@ -1,12 +1,23 @@
 import { UserCircle, PencilCircle, ClockCounterClockwise, CreditCard, HandCoins, Coins, ArrowLeft } from "@phosphor-icons/react";
 import { Aside, Container, Content, Header } from "./styles";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import { api } from "../../lib/axios";
 
 export function DefaultLayout() {
 
-    const { handleLogout } = useContext(AuthContext);
+    const { toggleAuthenticatedState } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+
+    function handleLogout() {
+
+        toggleAuthenticatedState(false);
+        localStorage.removeItem("token");
+        api.defaults.headers.Authorization = null;
+        navigate("/");
+    }
 
     return (
         <Container>

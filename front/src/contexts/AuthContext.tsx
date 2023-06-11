@@ -1,13 +1,10 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { api } from "../lib/axios";
-import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
     authenticated: boolean;
-    loading: boolean;
-    handleLogin: (username: string, password: string) => void;
-    handleLogout: () => void;
+    toggleAuthenticatedState: (value: boolean) => void;
 }
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -28,38 +25,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         if (token) {
             api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`;
             setAuthenticated(true);
+            navigate("/launcher");
         }
 
         setLoading(false);
     }, []);
 
-    async function handleLogin(username: string, password: string) {
-        console.log(username, password);
-
-        try {
-            const { data } = await api.post("/login", {
-                username,
-                password
-            });
-
-            localStorage.setItem("token", JSON.stringify(data.token));
-            api.defaults.headers.Authorization = `Bearer ${data.token}`;
-            setAuthenticated(true);
-            navigate("/launcher");
-
-        } catch (err) {
-            if (err instanceof AxiosError && err?.response?.data?.message) {
-                return console.log(err.response.data.message);
-            }
-        }
-    }
-
-    function handleLogout() {
-
-        setAuthenticated(false);
-        localStorage.removeItem("token");
-        api.defaults.headers.Authorization = null;
-        navigate("/");
+    function toggleAuthenticatedState(value: boolean) {
+        setAuthenticated(value);
     }
 
     if (loading) {
@@ -67,7 +40,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     return (
-        <AuthContext.Provider value={{ authenticated, handleLogin, loading, handleLogout }}>
+        <AuthContext.Provider value={{ authenticated, toggleAuthenticatedState }}>
             {children}
         </AuthContext.Provider>
     );
