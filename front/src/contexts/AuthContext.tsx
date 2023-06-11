@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { api } from "../lib/axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
     authenticated: boolean;
@@ -17,7 +17,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [authenticated, setAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -25,7 +25,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         if (token) {
             api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`;
             setAuthenticated(true);
-            navigate("/launcher");
+            // navigate("/launcher");
         }
 
         setLoading(false);

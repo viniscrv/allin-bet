@@ -88,6 +88,6 @@ export const Content = styled("div", {
     display: "flex",
     margin: 12,
     section: {
-        marginLeft: 12
+        marginLeft: 20
     }
 });
