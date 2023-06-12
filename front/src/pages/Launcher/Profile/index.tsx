@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Container } from "./styles";
+import { Container, Statistics } from "./styles";
 import { api } from "../../../lib/axios";
 import dayjs from "dayjs";
+import { CaretDoubleDown, CaretDoubleUp, Pen } from "@phosphor-icons/react";
 
 export function Profile() {
 
@@ -54,7 +55,19 @@ export function Profile() {
                         <span>{data?.email}</span>
                     </div>
                 </div>
+
+                <button><Pen size={24}/></button>
             </main>
+            <Statistics>
+                <div>
+                    <p>Total de ganhos</p>
+                    <span><CaretDoubleUp size={16} weight="bold" />R$ 0,00</span>
+                </div>
+                <div>
+                    <p>Total de perdas</p>
+                    <span><CaretDoubleDown size={16} weight="bold" />R$ 0,00</span>
+                </div>
+            </Statistics>
         </Container>
     );
 }

@@ -3,7 +3,7 @@ import { styled } from "../../../stitches.config";
 export const Container = styled("div", {});
 
 export const Header = styled("header", {
-    backgroundColor: "$gray800",
+    backgroundColor: "$gray900",
     height: 100,
     width: "100vw",
     borderBottom: "1px solid $gray200",
@@ -88,6 +88,7 @@ export const Content = styled("div", {
     display: "flex",
     margin: 12,
     section: {
-        marginLeft: 20
+        // marginLeft: 20
+        margin: "0 auto"
     }
 });
