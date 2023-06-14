@@ -28,7 +28,9 @@ export function DefaultLayout() {
     return (
         <Container>
             <Header>
-                <h2><NavLink to={"/launcher"}>All in Bet Logo</NavLink></h2>
+                <h2>
+                    <NavLink to={"/launcher"}>All in Bet Logo</NavLink>
+                </h2>
                 <div>
                     <img src="https://github.com/viniscrv.png" />
                     <span>R$ 0,00</span>
@@ -49,13 +51,15 @@ export function DefaultLayout() {
                                 <PencilCircle size={18} color="#8B8B8B" />
                                 Editar perfil
                             </li>
-                            <li>
-                                <ClockCounterClockwise
-                                    size={18}
-                                    color="#8B8B8B"
-                                />
-                                Meu histórico
-                            </li>
+                            <NavLink to={"/launcher/history"}>
+                                <li>
+                                    <ClockCounterClockwise
+                                        size={18}
+                                        color="#8B8B8B"
+                                    />
+                                    Meu histórico
+                                </li>
+                            </NavLink>
                             <li>
                                 <CreditCard size={18} color="#8B8B8B" />
                                 Depositar saldo
