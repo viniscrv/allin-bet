@@ -1,13 +1,41 @@
 import {
+    Article,
     CalendarBlank,
-    Club,
     Coins,
     GameController,
     Money
 } from "@phosphor-icons/react";
 import { Container, HistoryList } from "./styles";
+import { useEffect, useState } from "react";
+import { api } from "../../../lib/axios";
+import dayjs from "dayjs";
 
 export function History() {
+    interface dataType {
+        Bet: {
+            created_at: Date;
+            isVictory: boolean;
+            value: string;
+        }[];
+    }
+
+    const [data, setData] = useState<dataType>();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await api.get("/history");
+            setData(response.data.userBets);
+        };
+
+        fetchData();
+    }, []);
+
+    function formatDate(date: Date) {
+        const createdAt = dayjs(date).format("D/M/YYYY");
+
+        return createdAt;
+    }
+
     return (
         <Container>
             <h1>Meu histórico</h1>
@@ -30,8 +58,8 @@ export function History() {
                             </th>
                             <th>
                                 <span>
-                                    <Club size={18} color="#8B8B8B" />
-                                    Ganhos/Perdas
+                                    <Article size={18} color="#8B8B8B" />
+                                    Resultado
                                 </span>
                             </th>
                             <th>
@@ -43,61 +71,31 @@ export function History() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <span>
-                                    <Coins size={18} color="#8B8B8B" />
-                                    Double gain
-                                </span>
-                            </td>
-                            <td>R$ 62,00</td>
-                            <td>+ R$ 62,00</td>
-                            <td>01/01/2023</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span>
-                                    <Coins size={18} color="#8B8B8B" />
-                                    Double gain
-                                </span>
-                            </td>
-                            <td>R$ 62,00</td>
-                            <td>+ R$ 62,00</td>
-                            <td>01/01/2023</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span>
-                                    <Coins size={18} color="#8B8B8B" />
-                                    Double gain
-                                </span>
-                            </td>
-                            <td>R$ 62,00</td>
-                            <td>+ R$ 62,00</td>
-                            <td>01/01/2023</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span>
-                                    <Coins size={18} color="#8B8B8B" />
-                                    Double gain
-                                </span>
-                            </td>
-                            <td>R$ 62,00</td>
-                            <td>+ R$ 62,00</td>
-                            <td>01/01/2023</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span>
-                                    <Coins size={18} color="#8B8B8B" />
-                                    Double gain
-                                </span>
-                            </td>
-                            <td>R$ 62,00</td>
-                            <td>+ R$ 62,00</td>
-                            <td>01/01/2023</td>
-                        </tr>
+                        {data?.Bet.map((bet, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td>
+                                        <span>
+                                            <Coins size={18} color="#8B8B8B" />
+                                            Double gain
+                                        </span>
+                                    </td>
+                                    <td>R$ {bet.value}</td>
+                                    {bet.isVictory && (
+                                        <td style={{ color: "#358e43" }}>
+                                            Vitória
+                                        </td>
+                                    )}
+                                    {!bet.isVictory && (
+                                        <td style={{ color: "#D94848" }}>
+                                            Derrota
+                                        </td>
+                                    )}
+
+                                    <td>{formatDate(bet.created_at)}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </HistoryList>
