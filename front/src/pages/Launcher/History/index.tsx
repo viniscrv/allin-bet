@@ -9,6 +9,7 @@ import { Container, HistoryList } from "./styles";
 import { useEffect, useState } from "react";
 import { api } from "../../../lib/axios";
 import dayjs from "dayjs";
+import { priceFormatter } from "../../../utils/formatter";
 
 export function History() {
     interface dataType {
@@ -80,7 +81,7 @@ export function History() {
                                             Double gain
                                         </span>
                                     </td>
-                                    <td>R$ {bet.value}</td>
+                                    <td>{priceFormatter.format(Number(bet.value))}</td>
                                     {bet.isVictory && (
                                         <td style={{ color: "#358e43" }}>
                                             Vitória

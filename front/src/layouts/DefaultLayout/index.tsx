@@ -12,9 +12,12 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { api } from "../../lib/axios";
+import { UserContext } from "../../contexts/UserContext";
+import { priceFormatter } from "../../utils/formatter";
 
 export function DefaultLayout() {
     const { toggleAuthenticatedState } = useContext(AuthContext);
+    const { userData, usernameCapitalized } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -33,13 +36,13 @@ export function DefaultLayout() {
                 </h2>
                 <div>
                     <img src="https://github.com/viniscrv.png" />
-                    <span>R$ 0,00</span>
+                    <span>{priceFormatter.format(userData?.balance!)}</span>
                 </div>
             </Header>
             <Content>
                 <Aside>
                     <nav>
-                        <span>Username</span>
+                        <span>{usernameCapitalized}</span>
                         <ul>
                             <NavLink to={"/launcher/profile"}>
                                 <li>
