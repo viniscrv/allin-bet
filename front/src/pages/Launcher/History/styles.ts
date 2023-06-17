@@ -23,7 +23,7 @@ export const HistoryList = styled("div", {
             span: {
                 display: "flex",
                 alignItems: "center",
-                gap: 10,
+                gap: 10
             },
 
             "&:first-child": {
@@ -45,6 +45,7 @@ export const HistoryList = styled("div", {
             span: {
                 display: "flex",
                 alignItems: "center",
+                color: "$gray300",
                 gap: 10
             },
 

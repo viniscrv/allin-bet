@@ -40,7 +40,7 @@ export function UserProvider({ children }: UserProviderProps) {
 
             fetchData();
         }
-    }, []);
+    }, [authenticated]);
 
     function capitalizeUsername(username: string) {
         return username.charAt(0).toUpperCase() + username.slice(1);
