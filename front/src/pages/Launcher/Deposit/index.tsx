@@ -10,9 +10,9 @@ import { AxiosError } from "axios";
 import { UserContext } from "../../../contexts/UserContext";
 
 const cardInfoFormSchema = z.object({
-    fullName: z.string(),
-    cardNumber: z.string(),
-    expirationDate: z.string()
+    fullName: z.string().regex(/^[a-zA-Z]{5,}$/, { message: "Nome inválido" }),
+    cardNumber: z.string().regex(/^\d{4}\.\d{4}\.\d{4}\.\d{4}$/, { message: "Formato inválido" }),
+    expirationDate: z.string().regex(/^\d{2}\/\d{2}$/, { message: "Data inválida" }),
     // securityCode: z.number().min(3).max(3)
 });
 
@@ -24,7 +24,7 @@ export function Deposit() {
     const {
         register,
         handleSubmit,
-        formState: { isSubmitting }
+        formState: { isSubmitting, errors }
     } = useForm<CardInfoFormData>({
         resolver: zodResolver(cardInfoFormSchema)
     });
@@ -103,6 +103,11 @@ export function Deposit() {
                                 placeholder="Jhon Doe"
                                 {...register("fullName")}
                             />
+                            {errors.fullName && (
+                                <span className="invalid">
+                                    {errors.fullName.message}
+                                </span>
+                            )}
                         </label>
                         <label>
                             Número do cartão:
@@ -111,6 +116,11 @@ export function Deposit() {
                                 placeholder="0000.0000.0000.0000"
                                 {...register("cardNumber")}
                             />
+                            {errors.cardNumber && (
+                                <span className="invalid">
+                                    {errors.cardNumber.message}
+                                </span>
+                            )}
                         </label>
                         <div className="small-input">
                             <label>
@@ -120,6 +130,11 @@ export function Deposit() {
                                     placeholder="01/30"
                                     {...register("expirationDate")}
                                 />
+                                {errors.expirationDate && (
+                                <span className="invalid">
+                                    {errors.expirationDate.message}
+                                </span>
+                            )}
                             </label>
                             {/* <label>
                                 Código de segurança:

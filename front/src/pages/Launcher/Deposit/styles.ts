@@ -103,6 +103,12 @@ export const CardInfo = styled("div", {
             gap: "1rem"
         },
 
+        ".invalid": {
+            color: "$red700",
+            fontSize: 14,
+            marginTop: ".5rem",
+        },
+
         button: {
             marginTop: "1rem",
             backgroundColor: "$primary500",
