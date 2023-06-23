@@ -63,10 +63,12 @@ export function DefaultLayout() {
                                     Meu histórico
                                 </li>
                             </NavLink>
-                            <li>
-                                <CreditCard size={18} color="#8B8B8B" />
-                                Depositar saldo
-                            </li>
+                            <NavLink to={"/launcher/deposit"}>
+                                <li>
+                                    <CreditCard size={18} color="#8B8B8B" />
+                                    Depositar saldo
+                                </li>
+                            </NavLink>
                             <li>
                                 <HandCoins size={18} color="#8B8B8B" />
                                 Retirar saldo

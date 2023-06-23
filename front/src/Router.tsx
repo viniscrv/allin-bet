@@ -4,6 +4,7 @@ import { Login } from "./pages/Login";
 import { DefaultLayout } from "./layouts/DefaultLayout";
 import { Profile } from "./pages/Launcher/Profile";
 import { History } from "./pages/Launcher/History";
+import { Deposit } from "./pages/Launcher/Deposit";
 
 export function Router() {
     return (
@@ -16,6 +17,7 @@ export function Router() {
                 {/* rotas com layout */}
                 <Route path="/launcher/profile" element={<Profile/>}/>
                 <Route path="/launcher/history" element={<History/>}/>
+                <Route path="/launcher/deposit" element={<Deposit/>}/>
             </Route>
         </Routes>
     );
