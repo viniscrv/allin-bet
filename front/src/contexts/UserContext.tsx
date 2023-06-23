@@ -11,6 +11,7 @@ import { AuthContext } from "./AuthContext";
 interface UserContextType {
     userData?: userDataType;
     usernameCapitalized: string;
+    refreshUserData: () => void;
 }
 
 interface userDataType {
@@ -29,6 +30,12 @@ interface UserProviderProps {
 export function UserProvider({ children }: UserProviderProps) {
     const [userData, setData] = useState<userDataType>();
 
+    const [updateUserData, setUpdateUserData] = useState(0);
+
+    function refreshUserData() {
+        setUpdateUserData(updateUserData + 1);
+    }
+
     const { authenticated } = useContext(AuthContext);
 
     useEffect(() => {
@@ -40,7 +47,7 @@ export function UserProvider({ children }: UserProviderProps) {
 
             fetchData();
         }
-    }, [authenticated]);
+    }, [authenticated, updateUserData]);
 
     function capitalizeUsername(username: string) {
         return username.charAt(0).toUpperCase() + username.slice(1);
@@ -51,7 +58,9 @@ export function UserProvider({ children }: UserProviderProps) {
     );
 
     return (
-        <UserContext.Provider value={{ usernameCapitalized, userData }}>
+        <UserContext.Provider
+            value={{ usernameCapitalized, userData, refreshUserData }}
+        >
             {children}
         </UserContext.Provider>
     );
