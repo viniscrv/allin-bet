@@ -50,10 +50,12 @@ export function DefaultLayout() {
                                     Ver perfil
                                 </li>
                             </NavLink>
-                            <li>
-                                <PencilCircle size={18} color="#8B8B8B" />
-                                Editar perfil
-                            </li>
+                            <NavLink to={"/edit-profile"}>
+                                <li>
+                                    <PencilCircle size={18} color="#8B8B8B" />
+                                    Editar perfil
+                                </li>
+                            </NavLink>
                             <NavLink to={"/launcher/history"}>
                                 <li>
                                     <ClockCounterClockwise

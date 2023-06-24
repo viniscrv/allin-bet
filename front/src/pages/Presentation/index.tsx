@@ -12,7 +12,7 @@ export function Presentation() {
             <NavLink to="/login">
                 <button>Começar</button>
             </NavLink>
-            <a href="#">Ainda não tenho uma conta</a>
+            <a href="/signup">Ainda não tenho uma conta</a>
         </Container>
     );
 }

@@ -82,7 +82,7 @@ export function Login() {
                 </button>
             </form>
             <p>
-                Ainda não tem uma conta? <a href="#">Criar conta</a>
+                Ainda não tem uma conta? <a href="/signup">Criar conta</a>
             </p>
             <a href="#">Esqueceu sua senha?</a>
         </Container>
