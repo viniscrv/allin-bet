@@ -50,7 +50,7 @@ export function DefaultLayout() {
                                     Ver perfil
                                 </li>
                             </NavLink>
-                            <NavLink to={"/edit-profile"}>
+                            <NavLink to={"/launcher/edit-profile"}>
                                 <li>
                                     <PencilCircle size={18} color="#8B8B8B" />
                                     Editar perfil
