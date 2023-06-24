@@ -7,6 +7,7 @@ import { History } from "./pages/Launcher/History";
 import { Deposit } from "./pages/Launcher/Deposit";
 import { EditProfile } from "./pages/Launcher/EditProfile";
 import { Signup } from "./pages/Signup";
+import { DoubleGain } from "./pages/Launcher/Games/DoubleGain";
 
 export function Router() {
     return (
@@ -22,6 +23,7 @@ export function Router() {
                 <Route path="/launcher/edit-profile" element={<EditProfile/>}/>
                 <Route path="/launcher/history" element={<History/>}/>
                 <Route path="/launcher/deposit" element={<Deposit/>}/>
+                <Route path="/launcher/games/double-gain" element={<DoubleGain/>}/>
             </Route>
         </Routes>
     );
