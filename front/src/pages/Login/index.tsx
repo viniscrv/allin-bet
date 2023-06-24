@@ -5,7 +5,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../lib/axios";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 
 const loginFormSchema = z.object({
@@ -82,7 +82,8 @@ export function Login() {
                 </button>
             </form>
             <p>
-                Ainda não tem uma conta? <a href="/signup">Criar conta</a>
+                Ainda não tem uma conta?
+                <NavLink to={"/register"}>Criar conta</NavLink>
             </p>
             <a href="#">Esqueceu sua senha?</a>
         </Container>

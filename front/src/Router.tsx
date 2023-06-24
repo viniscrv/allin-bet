@@ -6,7 +6,7 @@ import { Profile } from "./pages/Launcher/Profile";
 import { History } from "./pages/Launcher/History";
 import { Deposit } from "./pages/Launcher/Deposit";
 import { EditProfile } from "./pages/Launcher/EditProfile";
-import { Signup } from "./pages/Signup";
+import { Register } from "./pages/Register";
 import { DoubleGain } from "./pages/Launcher/Games/DoubleGain";
 
 export function Router() {
@@ -14,7 +14,7 @@ export function Router() {
         <Routes>
             <Route path="/" element={<Presentation />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/register" element={<Register />} />
 
             {/* TODO: rotas protegidas */}
             <Route path="/launcher" element={<DefaultLayout />}>
