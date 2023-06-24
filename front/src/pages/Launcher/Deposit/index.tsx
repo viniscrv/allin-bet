@@ -11,9 +11,13 @@ import { UserContext } from "../../../contexts/UserContext";
 
 const cardInfoFormSchema = z.object({
     fullName: z.string().regex(/^[a-zA-Z]{5,}$/, { message: "Nome inválido" }),
-    cardNumber: z.string().regex(/^\d{4}\.\d{4}\.\d{4}\.\d{4}$/, { message: "Formato inválido" }),
-    expirationDate: z.string().regex(/^\d{2}\/\d{2}$/, { message: "Data inválida" }),
-    // securityCode: z.number().min(3).max(3)
+    cardNumber: z
+        .string()
+        .regex(/^\d{4}\.\d{4}\.\d{4}\.\d{4}$/, { message: "Formato inválido" }),
+    expirationDate: z
+        .string()
+        .regex(/^\d{2}\/\d{2}$/, { message: "Data inválida" }),
+    securityCode: z.number()
 });
 
 type CardInfoFormData = z.infer<typeof cardInfoFormSchema>;
@@ -131,15 +135,19 @@ export function Deposit() {
                                     {...register("expirationDate")}
                                 />
                                 {errors.expirationDate && (
-                                <span className="invalid">
-                                    {errors.expirationDate.message}
-                                </span>
-                            )}
+                                    <span className="invalid">
+                                        {errors.expirationDate.message}
+                                    </span>
+                                )}
                             </label>
-                            {/* <label>
+                            <label>
                                 Código de segurança:
-                                <input {...register("securityCode")} />
-                            </label> */}
+                                <input
+                                    {...register("securityCode", {
+                                        valueAsNumber: true
+                                    })}
+                                />
+                            </label>
                         </div>
 
                         <button disabled={isSubmitting}>

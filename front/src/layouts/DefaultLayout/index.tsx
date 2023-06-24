@@ -78,10 +78,12 @@ export function DefaultLayout() {
                         </ul>
                         <span>Jogos</span>
                         <ul>
-                            <li>
-                                <Coins size={18} color="#8B8B8B" />
-                                Double Gain
-                            </li>
+                            <NavLink to={"/launcher/games/double-gain"}>
+                                <li>
+                                    <Coins size={18} color="#8B8B8B" />
+                                    Double Gain
+                                </li>
+                            </NavLink>
                         </ul>
                     </nav>
                     <span className="logout" onClick={handleLogout}>
