@@ -5,8 +5,8 @@ import { prisma } from "../../../lib/prisma";
 
 export async function play(req: Request, res: Response): Promise<Response> {
     const playBodySchema = z.object({
-        color: z.enum(["yellow", "black"]),
-        value: z.number(),
+        color: z.enum(["red", "black"]),
+        value: z.number()
     });
 
     const { color, value } = playBodySchema.parse(req.body);
@@ -14,11 +14,11 @@ export async function play(req: Request, res: Response): Promise<Response> {
 
     const user = await prisma.user.findUnique({
         where: {
-            id,
+            id
         },
         select: {
-            balance: true,
-        },
+            balance: true
+        }
     });
 
     if (!user) {
@@ -36,20 +36,27 @@ export async function play(req: Request, res: Response): Promise<Response> {
     }
 
     function getColor() {
-        const randomNumber = Math.floor(Math.random() * 10) + 1;
+        let randomNumber = Math.floor(Math.random() * 15) + 1;
+
+        if (randomNumber === 15) {
+            randomNumber = 0;
+        }
 
         let randomColor: String = "";
 
-        if (randomNumber >= 1 && randomNumber <= 5) {
-            randomColor = "yellow";
+        if (randomNumber % 2 === 0) {
+            randomColor = "red";
+        } else if (randomNumber === 0) {
+            randomColor == "red";
         } else {
             randomColor = "black";
         }
-        return randomColor;
+
+        return { randomNumber, randomColor };
     }
 
     function runGame() {
-        const randomColor = getColor();
+        const { randomNumber, randomColor } = getColor();
         let isVictory;
         let handleValue;
 
@@ -61,10 +68,10 @@ export async function play(req: Request, res: Response): Promise<Response> {
             handleValue = value * -1;
         }
 
-        return { isVictory, handleValue };
+        return { isVictory, handleValue, randomNumber };
     }
 
-    const { isVictory, handleValue } = runGame();
+    const { isVictory, handleValue, randomNumber } = runGame();
 
     const updatedBalance = await updateUserBalance(id, handleValue);
 
@@ -72,21 +79,23 @@ export async function play(req: Request, res: Response): Promise<Response> {
         data: {
             user_id: id,
             value,
-            isVictory,
-        },
+            isVictory
+        }
     });
 
     if (!isVictory) {
         return res.status(200).json({
             message: "Unfortunately you didn't win this time",
+            number: randomNumber,
             losses: handleValue,
-            updatedBalance,
+            updatedBalance
         });
     }
 
     return res.status(200).json({
         message: "Congratulations, you have won",
+        number: randomNumber,
         gains: handleValue,
-        updatedBalance,
+        updatedBalance
     });
 }
