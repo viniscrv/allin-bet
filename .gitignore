@@ -1,6 +1,8 @@
 node_modules
 .env
 dev.db
+keyFile
+keyFyle.pub
 
 # Logs
 logs

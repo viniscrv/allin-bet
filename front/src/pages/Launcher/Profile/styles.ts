@@ -8,8 +8,7 @@ export const Container = styled("div", {
         backgroundColor: "$gray800",
         border: "1px solid $gray200",
         borderRadius: 6,
-        padding: 18,
-
+        padding: 18, 
         display: "flex",
         flexWrap: "wrap",
         alignItems: "center",
