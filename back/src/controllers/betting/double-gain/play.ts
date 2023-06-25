@@ -5,7 +5,7 @@ import { prisma } from "../../../lib/prisma";
 
 export async function play(req: Request, res: Response): Promise<Response> {
     const playBodySchema = z.object({
-        color: z.enum(["red", "black"]),
+        color: z.enum(["red", "white", "black"]),
         value: z.number()
     });
 
@@ -44,7 +44,9 @@ export async function play(req: Request, res: Response): Promise<Response> {
 
         let randomColor: String = "";
 
-        if (randomNumber <= 7) {
+        if (randomNumber === 0) {
+            randomColor = "white";
+        } else if (randomNumber <= 7) {
             randomColor = "red";
         } else {
             randomColor = "black";
@@ -60,16 +62,28 @@ export async function play(req: Request, res: Response): Promise<Response> {
 
         if (color === randomColor) {
             isVictory = true;
+
+            if (randomColor === "white") {
+                handleValue = value * 14;
+
+                return {
+                    isVictory,
+                    handleValue,
+                    randomNumber,
+                    isJackpot: true
+                };
+            }
+
             handleValue = value;
         } else {
             isVictory = false;
             handleValue = value * -1;
         }
 
-        return { isVictory, handleValue, randomNumber };
+        return { isVictory, handleValue, randomNumber, isJackpot: false };
     }
 
-    const { isVictory, handleValue, randomNumber } = runGame();
+    const { isVictory, isJackpot, handleValue, randomNumber } = runGame();
 
     const updatedBalance = await updateUserBalance(id, handleValue);
 
@@ -77,7 +91,8 @@ export async function play(req: Request, res: Response): Promise<Response> {
         data: {
             user_id: id,
             value,
-            isVictory
+            isVictory,
+            isJackpot
         }
     });
 

@@ -62,7 +62,7 @@ export const Container = styled("div", {
 
 export const ColorSelect = styled(RadioGroup.Root, {
     display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
+    gridTemplateColumns: "repeat(3, 1fr)",
     gap: "1rem"
 });
 
@@ -147,6 +147,11 @@ export const Roullete = styled("div", {
 
         "&.red": {
             background: "#FB3640"
+        },
+
+        "&.white": {
+            background: "$white",
+            color: "#171717"
         },
 
         "&.black": {

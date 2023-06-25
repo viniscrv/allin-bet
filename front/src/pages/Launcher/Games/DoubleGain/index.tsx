@@ -9,16 +9,17 @@ import { UserContext } from "../../../../contexts/UserContext";
 
 const playerOptionsFormSchema = z.object({
     value: z.number(),
-    color: z.enum(["red", "black"])
+    color: z.enum(["red", "white", "black"])
 });
 
 type playerOptionsFormData = z.infer<typeof playerOptionsFormSchema>;
 
 export function DoubleGain() {
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
     const {
         register,
         handleSubmit,
-        formState: { isSubmitting },
         control
     } = useForm<playerOptionsFormData>({
         resolver: zodResolver(playerOptionsFormSchema)
@@ -40,8 +41,10 @@ export function DoubleGain() {
             console.log(data);
 
             spinWheel(data.number);
+            setIsButtonDisabled(true);
 
             setTimeout(() => {
+                setIsButtonDisabled(false);
                 refreshUserData();
             }, 6 * 1000);
         } catch (err) {
@@ -89,7 +92,7 @@ export function DoubleGain() {
         { value: 3, class: "red" },
         { value: 12, class: "black" },
         { value: 4, class: "red" },
-        { value: 0, class: "green" },
+        { value: 0, class: "white" },
         { value: 11, class: "black" },
         { value: 5, class: "red" },
         { value: 10, class: "black" },
@@ -125,9 +128,9 @@ export function DoubleGain() {
                                     <ColorButton value="red" color="red">
                                         2x
                                     </ColorButton>
-                                    {/* <ColorButton value="white" color="white">
+                                    <ColorButton value="white" color="white">
                                         14x
-                                    </ColorButton> */}
+                                    </ColorButton>
                                     <ColorButton value="black" color="black">
                                         2x
                                     </ColorButton>
@@ -138,7 +141,7 @@ export function DoubleGain() {
 
                     <button
                         className="start-game-button"
-                        disabled={isSubmitting}
+                        disabled={isButtonDisabled}
                     >
                         Começar jogo
                     </button>
