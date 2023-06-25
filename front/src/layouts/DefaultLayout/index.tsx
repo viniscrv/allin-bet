@@ -35,7 +35,7 @@ export function DefaultLayout() {
                     <NavLink to={"/launcher"}>All in Bet Logo</NavLink>
                 </h2>
                 <div>
-                    <img src="https://github.com/viniscrv.png" />
+                    <img src="https://github.com/vini9457128.png" />
                     <span>{priceFormatter.format(userData?.balance!)}</span>
                 </div>
             </Header>

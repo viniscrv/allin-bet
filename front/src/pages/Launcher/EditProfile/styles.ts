@@ -8,56 +8,67 @@ export const Container = styled("div", {
         backgroundColor: "$gray800",
         border: "1px solid $gray200",
         borderRadius: 6,
-        padding: 18,
+        padding: "2rem 3rem",
         display: "flex",
+        flexDirection: "column",
         flexWrap: "wrap",
         alignItems: "center",
         gap: "1.5rem",
-        boxSizing: "border-box",
-        width: "40vw",
-        height: "73vh",
 
         img: {
             borderRadius: "100%",
-            width: 100,
+            width: 180,
             border: "2px solid $primary500"
         },
-
+        label: {
+            display: "flex",
+            flexDirection: "column",
+            gap: ".5rem"
+        },
         input: {
-            marginTop: 1,
             backgroundColor: "transparent",
             border: "1px solid $gray200",
             borderRadius: 6,
             padding: "12px 24px",
-            fontSize: "$sm",
+            fontSize: "$sm"
         },
-
+        ".invalid": {
+            color: "$red700",
+            fontSize: 14,
+            marginTop: ".5rem"
+        },
         form: {
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
-            width: "500px", 
+            width: "500px",
 
             button: {
                 backgroundColor: "$primary500",
                 border: "none",
                 borderRadius: 6,
-                padding: "10px 84px",
+                padding: "16px 64px",
                 fontWeight: "bold",
                 cursor: "pointer",
                 fontSize: "$sm",
                 transition: "all .2s",
-                width: "min-content",
-                alignSelf: "center",
+                width: "max-content",
+                alignSelf: "end",
 
                 "&:not([disabled]):hover": {
-                  backgroundColor: "$primary400",
+                    backgroundColor: "$primary400"
                 },
 
                 "&:disabled": {
-                  opacity: "0.5",
-                },
+                    opacity: "0.5"
+                }
             },
+
+            ".small-input": {
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: "1rem"
+            }
         },
         ".customFileUpload": {
             backgroundColor: "$primary500",
@@ -71,10 +82,10 @@ export const Container = styled("div", {
             width: "min-content",
             alignSelf: "center",
             textAlign: "center",
-    
+
             "&:hover": {
-                backgroundColor: "$primary400",
-            },
-        },
-    },
+                backgroundColor: "$primary400"
+            }
+        }
+    }
 });

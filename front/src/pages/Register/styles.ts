@@ -42,6 +42,12 @@ export const Container = styled("div", {
             fontWeight: "normal"
         },
 
+        ".invalid": {
+            color: "$red700",
+            fontSize: 14,
+            marginTop: ".5rem"
+        },
+
         button: {
             marginBottom: 8,
             backgroundColor: "$primary500",

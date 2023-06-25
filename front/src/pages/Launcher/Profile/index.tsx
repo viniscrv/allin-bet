@@ -14,7 +14,7 @@ export function Profile() {
             <h1>Meu perfil</h1>
 
             <main>
-                <img src="https://github.com/viniscrv.png" />
+                <img src="https://github.com/vini9457128.png" />
                 <div>
                     <h2>{usernameCapitalized}</h2>
                     <p>

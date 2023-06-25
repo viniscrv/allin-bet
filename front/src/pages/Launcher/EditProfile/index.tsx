@@ -1,109 +1,137 @@
-import { useContext, useState } from "react";
 import { Container } from "./styles";
-import { UserContext } from "../../../contexts/UserContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Pen } from "@phosphor-icons/react";
 import { api } from "../../../lib/axios";
+import { useContext } from "react";
+import { UserContext } from "../../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const profileSchema = z.object({
-  username: z.string(),
-  email: z.string().email(),
-  password: z.string(),
-  passwordConfirmation: z.string(),
+    username: z.string().nullable(),
+    summary: z.string().nullable(),
+    email: z.string().email().nullable(),
+    password: z.string().nullable(),
+    passwordConfirmation: z.string().nullable()
 });
-
 type ProfileFormData = z.infer<typeof profileSchema>;
 
 export function EditProfile() {
-  const { userData } = useContext(UserContext);
-  
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting }
-  } = useForm<ProfileFormData>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      username: userData?.username,
-      email: userData?.email,
-    },
-  });
+    const {
+        register,
+        handleSubmit,
+        formState: { isSubmitting }
+    } = useForm<ProfileFormData>({
+        resolver: zodResolver(profileSchema)
+    });
 
-  async function submitForm(data: ProfileFormData) {
-    const { username, email, password, passwordConfirmation } = data;
+    const navigate = useNavigate();
 
-    if (password !== passwordConfirmation) {
-        console.error("As senhas não correspondem.");
-        return;
-    }
+    const { refreshUserData } = useContext(UserContext);
 
-    try {
-    
-        const response = await api.post('/register', { username, email, password });
+    async function submitForm(data: ProfileFormData) {
+        const { username, summary, email, password, passwordConfirmation } =
+            data;
 
-        if (response.status === 200) {
-            console.log('Usuário registrado com sucesso!');
-        } else {
-            console.error('Erro ao registrar usuário:', response.data.error);
+        if (password !== passwordConfirmation) {
+            console.error("As senhas não correspondem.");
+            return;
         }
-    } catch (error: any) {
-        if (error.response && error.response.data) {
-            console.error('Erro ao registrar usuário:', error.response.data.error);
-        } else {
-            console.error('Erro ao registrar usuário:', error.message);
+
+        try {
+            await api.put("/edit", {
+                username: username ? username : null,
+                summary: summary ? summary : null,
+                email: email ? email : null,
+                password: password ? password : null
+            });
+
+            refreshUserData();
+            navigate("/launcher/profile");
+        } catch (error: any) {
+            if (error.response && error.response.data) {
+                console.error(
+                    "Erro ao registrar usuário:",
+                    error.response.data.error
+                );
+            } else {
+                console.error("Erro ao registrar usuário:", error.message);
+            }
         }
     }
-}
 
-    const [selectedFile, setSelectedFile] = useState<string | null>(null);
+    // const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
-    function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-    if (event.target.files && event.target.files.length > 0) {
-      setSelectedFile(URL.createObjectURL(event.target.files[0]));
-    }
-  }
+    // function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    //     if (event.target.files && event.target.files.length > 0) {
+    //         setSelectedFile(URL.createObjectURL(event.target.files[0]));
+    //     }
+    // }
 
-  return (
-    <Container>
-      <h1>Editar perfil</h1>
+    return (
+        <Container>
+            <h1>Editar perfil</h1>
 
-      <main>
-        <img src={selectedFile || "https://github.com/viniscrv.png"} />
-        <label htmlFor="fileUpload" className="customFileUpload">
-             Selecionar nova foto
-        </label>
-        <input type="file" id="fileUpload" style={{display: 'none'}} onChange={handleFileChange} />
+            <main>
+                <img src={"https://github.com/vini9457128.png"} />
+                {/* <label htmlFor="fileUpload" className="customFileUpload">
+                    Selecionar nova foto
+                </label>
+                <input
+                    type="file"
+                    id="fileUpload"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                /> */}
 
-        
-        <form onSubmit={handleSubmit(submitForm)}>
-          <input
-            type="text"
-            placeholder="Username"
-            {...register("username")}
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            {...register("email")}
-          />
-          <input
-            type="password"
-            placeholder="Senha"
-            {...register("password")}
-          />
-          <input
-            type="password"
-            placeholder="Confirme a senha"
-            {...register("passwordConfirmation")}
-          />
-
-          <button type="submit" disabled={isSubmitting}>
-            <Pen size={24} />
-          </button>
-        </form>
-      </main>
-    </Container>
-  );
+                <form onSubmit={handleSubmit(submitForm)}>
+                    <label>
+                        Nome de usuário
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            {...register("username")}
+                        />
+                    </label>
+                    <label>
+                        Biografia
+                        <input
+                            type="text"
+                            placeholder="Biografia"
+                            {...register("summary")}
+                        />
+                    </label>
+                    <label>
+                        E-mail
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            {...register("email")}
+                        />
+                    </label>
+                    <div className="small-input">
+                        <label>
+                            Senha
+                            <input
+                                type="password"
+                                placeholder="Senha"
+                                {...register("password")}
+                            />
+                        </label>
+                        <label>
+                            Confirmação de senha
+                            <input
+                                type="password"
+                                placeholder="Confirme a senha"
+                                {...register("passwordConfirmation")}
+                            />
+                        </label>
+                    </div>
+                    <button type="submit" disabled={isSubmitting}>
+                        Confirmar alterações
+                    </button>
+                </form>
+            </main>
+        </Container>
+    );
 }
