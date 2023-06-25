@@ -123,10 +123,13 @@ export function DoubleGain() {
                                     value={field.value}
                                 >
                                     <ColorButton value="red" color="red">
-                                        Vermelho
+                                        2x
                                     </ColorButton>
+                                    {/* <ColorButton value="white" color="white">
+                                        14x
+                                    </ColorButton> */}
                                     <ColorButton value="black" color="black">
-                                        Preto
+                                        2x
                                     </ColorButton>
                                 </ColorSelect>
                             );

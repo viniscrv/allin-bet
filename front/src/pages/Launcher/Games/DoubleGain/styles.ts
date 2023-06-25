@@ -13,7 +13,6 @@ export const Container = styled("div", {
         display: "flex",
 
         form: {
-            width: "25%",
             paddingRight: ".5rem",
             borderRight: "1px solid $gray200",
             span: {
@@ -37,14 +36,14 @@ export const Container = styled("div", {
             },
             ".color-select-fields": {
                 display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
+                gridTemplateColumns: "repeat(2, 1fr)"
             },
             ".start-game-button": {
-                width: "100%",
+                width: "max-content",
                 backgroundColor: "$primary500",
                 border: "none",
                 borderRadius: 6,
-                padding: "16px 64px",
+                padding: "16px 44px",
                 fontWeight: "bold",
                 cursor: "pointer",
                 fontSize: "$sm",
@@ -80,14 +79,20 @@ export const ColorButton = styled(RadioGroup.Item, {
     "&:disabled": {
         opacity: "0.5"
     },
-    "&[data-state='unchecked']": {},
     "&[data-state='checked']": {
         border: "3px solid $white"
     },
     variants: {
         color: {
             red: {
-                backgroundColor: "#f95146"
+                backgroundColor: "#FB3640"
+            },
+            white: {
+                backgroundColor: "$white",
+                color: "#171717",
+                "&[data-state='checked']": {
+                    border: "3px solid $primary500"
+                }
             },
             black: {
                 backgroundColor: "#171717"
@@ -141,7 +146,7 @@ export const Roullete = styled("div", {
         fontSize: "1.5rem",
 
         "&.red": {
-            background: "#f95146"
+            background: "#FB3640"
         },
 
         "&.black": {

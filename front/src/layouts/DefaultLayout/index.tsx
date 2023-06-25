@@ -9,7 +9,7 @@ import {
 } from "@phosphor-icons/react";
 import { Aside, Container, Content, Header } from "./styles";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { api } from "../../lib/axios";
 import { UserContext } from "../../contexts/UserContext";
@@ -17,10 +17,16 @@ import { priceFormatter } from "../../utils/formatter";
 import logo from "../../assets/logo.jpg";
 
 export function DefaultLayout() {
-    const { toggleAuthenticatedState } = useContext(AuthContext);
+    const { toggleAuthenticatedState, authenticated } = useContext(AuthContext);
     const { userData, usernameCapitalized } = useContext(UserContext);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!authenticated) {
+            navigate("/");
+        }
+    }, []);
 
     function handleLogout() {
         toggleAuthenticatedState(false);
