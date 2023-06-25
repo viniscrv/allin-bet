@@ -16,6 +16,7 @@ interface UserContextType {
 
 interface userDataType {
     username: string;
+    summary: string;
     email: string;
     created_at: Date;
     balance: number;

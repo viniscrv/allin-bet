@@ -41,7 +41,7 @@ export const Container = styled("div", {
             }
         },
 
-        button: {
+        a: {
             position: "absolute",
             right: 30,
             bottom: 30,

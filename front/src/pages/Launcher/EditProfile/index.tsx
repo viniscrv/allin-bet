@@ -128,7 +128,7 @@ export function EditProfile() {
                         </label>
                     </div>
                     <button type="submit" disabled={isSubmitting}>
-                        Confirmar alterações
+                        Confirmar
                     </button>
                 </form>
             </main>

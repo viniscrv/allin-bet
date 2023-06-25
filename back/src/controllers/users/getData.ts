@@ -7,6 +7,7 @@ export async function getData(req: Request, res: Response): Promise<Response> {
         where: { id: userId },
         select: {
             username: true,
+            summary: true,
             email: true,
             balance: true,
             created_at: true

@@ -47,7 +47,7 @@ export const Container = styled("div", {
                 backgroundColor: "$primary500",
                 border: "none",
                 borderRadius: 6,
-                padding: "16px 64px",
+                padding: "16px 44px",
                 fontWeight: "bold",
                 cursor: "pointer",
                 fontSize: "$sm",

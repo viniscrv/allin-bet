@@ -143,6 +143,7 @@ export function Deposit() {
                             <label>
                                 Código de segurança:
                                 <input
+                                    placeholder="000"
                                     {...register("securityCode", {
                                         valueAsNumber: true
                                     })}

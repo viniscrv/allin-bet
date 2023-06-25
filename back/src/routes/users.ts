@@ -7,6 +7,7 @@ import { update } from "../controllers/users/update";
 import { deleteUser } from "../controllers/users/delete";
 import { deposit } from "../controllers/users/deposit";
 import { getHistory } from "../controllers/users/getHistory";
+import { getMetrics } from "../controllers/users/getMetrics";
 
 export const usersRoutes = Router();
 
@@ -15,6 +16,7 @@ usersRoutes.post("/login", authenticate);
 
 // Authenticated
 usersRoutes.get("/me", verifyJwt, getData);
+usersRoutes.get("/metrics", verifyJwt, getMetrics);
 usersRoutes.get("/history", verifyJwt, getHistory);
 usersRoutes.put("/edit", verifyJwt, update);
 usersRoutes.delete("/delete", verifyJwt, deleteUser);

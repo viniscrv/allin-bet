@@ -3,7 +3,7 @@ import {
     PencilCircle,
     ClockCounterClockwise,
     CreditCard,
-    HandCoins,
+    // HandCoins,
     Coins,
     ArrowLeft
 } from "@phosphor-icons/react";
@@ -71,10 +71,10 @@ export function DefaultLayout() {
                                     Depositar saldo
                                 </li>
                             </NavLink>
-                            <li>
+                            {/* <li>
                                 <HandCoins size={18} color="#8B8B8B" />
                                 Retirar saldo
-                            </li>
+                            </li> */}
                         </ul>
                         <span>Jogos</span>
                         <ul>

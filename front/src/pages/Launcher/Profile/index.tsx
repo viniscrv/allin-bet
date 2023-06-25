@@ -1,13 +1,32 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Container, Statistics } from "./styles";
 import dayjs from "dayjs";
 import { CaretDoubleDown, CaretDoubleUp, Pen } from "@phosphor-icons/react";
 import { UserContext } from "../../../contexts/UserContext";
+import { NavLink } from "react-router-dom";
+import { api } from "../../../lib/axios";
+import { priceFormatter } from "../../../utils/formatter";
 
 export function Profile() {
     const { userData, usernameCapitalized } = useContext(UserContext);
 
     const createdAt = dayjs(userData?.created_at).format("D/M/YYYY");
+
+    interface metricsType {
+        totalProfit: number;
+        totalLosses: number;
+    }
+
+    const [metricsData, setMetricsData] = useState<metricsType>();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await api.get("/metrics");
+            setMetricsData(response.data);
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <Container>
@@ -17,11 +36,7 @@ export function Profile() {
                 <img src="https://github.com/vini9457128.png" />
                 <div>
                     <h2>{usernameCapitalized}</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Corporis, aspernatur sint. Repellendus obcaecati
-                        pariatur nesciunt
-                    </p>
+                    <p>{userData?.summary}</p>
                     <span>Entrou em {createdAt}</span>
                 </div>
 
@@ -33,23 +48,23 @@ export function Profile() {
                     </div>
                 </div>
 
-                <button>
+                <NavLink to={"/launcher/edit-profile"}>
                     <Pen size={24} />
-                </button>
+                </NavLink>
             </main>
             <Statistics>
                 <div>
                     <p>Total de ganhos</p>
                     <span>
                         <CaretDoubleUp size={16} weight="bold" />
-                        R$ 0,00
+                        {priceFormatter.format(metricsData?.totalProfit!)}
                     </span>
                 </div>
                 <div>
                     <p>Total de perdas</p>
                     <span>
                         <CaretDoubleDown size={16} weight="bold" />
-                        R$ 0,00
+                        {priceFormatter.format(metricsData?.totalLosses!)}
                     </span>
                 </div>
             </Statistics>

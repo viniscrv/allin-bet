@@ -16,5 +16,8 @@ export const globalStyles = globalCss({
             outline: "transparent",
             boxShadow: "0 0 0 2px $colors$primary500"
         }
+    },
+    a: {
+        textDecoration: "none"
     }
 });
