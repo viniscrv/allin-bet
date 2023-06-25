@@ -38,7 +38,6 @@ export const Container = styled("div", {
             ".color-select-fields": {
                 display: "grid",
                 gridTemplateColumns: "repeat(2, 1fr)",
-                gap: "1rem"
             },
             ".start-game-button": {
                 width: "100%",
@@ -83,7 +82,7 @@ export const ColorButton = styled(RadioGroup.Item, {
     },
     "&[data-state='unchecked']": {},
     "&[data-state='checked']": {
-        border: "3px solid $primary500"
+        border: "3px solid $white"
     },
     variants: {
         color: {

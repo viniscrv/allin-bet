@@ -87,17 +87,20 @@ export function Deposit() {
                             Informações adicionais
                         </span>
                         <p>
-                            Todos as transações de dinheiro são falsasTodos as
-                            transações de dinheiro são falsasTodos as transações
-                            de dinheiro são falsasTodos as transações de
-                            dinheiro são falsas
+                            Por se tratar de um projeto acadêmico, todas as
+                            transações são falsas e não envolvem nenhum risco
+                            real.
+                        </p>
+                        <p>
+                            Por isso, sinta-se livre para adicionar quanto saldo
+                            quiser ;)
                         </p>
                     </div>
                 </PurchaseInfo>
 
                 <CardInfo>
                     <h2>Dados para pagamento</h2>
-                    <span>Consulte a documentaçãoConsulte a documentação</span>
+                    <span>Preencha os dados para finalizar sua compra</span>
 
                     <form onSubmit={handleSubmit(submitLogin)}>
                         <label>
@@ -143,11 +146,17 @@ export function Deposit() {
                             <label>
                                 Código de segurança:
                                 <input
+                                    type="text"
                                     placeholder="000"
                                     {...register("securityCode", {
                                         valueAsNumber: true
                                     })}
                                 />
+                                {errors.securityCode && (
+                                    <span className="invalid">
+                                        Código inválido
+                                    </span>
+                                )}
                             </label>
                         </div>
 

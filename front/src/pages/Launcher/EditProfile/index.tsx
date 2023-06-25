@@ -89,7 +89,7 @@ export function EditProfile() {
                         Nome de usuário
                         <input
                             type="text"
-                            placeholder="Username"
+                            placeholder="Seu username"
                             {...register("username")}
                         />
                     </label>
@@ -97,7 +97,7 @@ export function EditProfile() {
                         Biografia
                         <input
                             type="text"
-                            placeholder="Biografia"
+                            placeholder="Sua biografia"
                             {...register("summary")}
                         />
                     </label>
@@ -105,7 +105,7 @@ export function EditProfile() {
                         E-mail
                         <input
                             type="email"
-                            placeholder="Email"
+                            placeholder="Seu e-mail"
                             {...register("email")}
                         />
                     </label>

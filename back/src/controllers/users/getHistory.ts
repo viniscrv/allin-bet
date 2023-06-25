@@ -13,6 +13,9 @@ export async function getHistory(
         },
         select: {
             Bet: {
+                orderBy: {
+                    created_at: "desc"
+                },
                 select: {
                     isVictory: true,
                     value: true,

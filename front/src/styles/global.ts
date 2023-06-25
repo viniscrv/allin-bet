@@ -19,5 +19,17 @@ export const globalStyles = globalCss({
     },
     a: {
         textDecoration: "none"
+    },
+    "::selection": {
+        backgroundColor: "#be123c70"
+    },
+    "::-webkit-scrollbar": {
+        width: "18px"
+    },
+    "::-webkit-scrollbar-track": {
+        background: "$gray900"
+    },
+    "::-webkit-scrollbar-thumb": {
+        background: "$gray800"
     }
 });

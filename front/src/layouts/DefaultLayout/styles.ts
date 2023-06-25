@@ -12,6 +12,10 @@ export const Header = styled("header", {
     alignItems: "center",
     padding: "20px 60px",
 
+    "#logo": {
+        width: 100
+    },
+
     div: {
         display: "flex",
         alignItems: "center",

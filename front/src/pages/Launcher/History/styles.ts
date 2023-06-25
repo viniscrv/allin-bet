@@ -9,6 +9,8 @@ export const HistoryList = styled("div", {
     paddingTop: 18,
     overflow: "auto",
     minWidth: 1000,
+    maxHeight: "60vh",
+    overflowY: "scroll",
 
     table: {
         width: "100%",

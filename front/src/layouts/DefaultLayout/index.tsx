@@ -14,6 +14,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { api } from "../../lib/axios";
 import { UserContext } from "../../contexts/UserContext";
 import { priceFormatter } from "../../utils/formatter";
+import logo from "../../assets/logo.jpg";
 
 export function DefaultLayout() {
     const { toggleAuthenticatedState } = useContext(AuthContext);
@@ -31,11 +32,13 @@ export function DefaultLayout() {
     return (
         <Container>
             <Header>
-                <h2>
-                    <NavLink to={"/launcher"}>All in Bet Logo</NavLink>
-                </h2>
+                <NavLink to={"/launcher/profile"}>
+                    <img id="logo" src={logo} alt="" />
+                </NavLink>
                 <div>
-                    <img src="https://github.com/vini9457128.png" />
+                    <NavLink to={"/launcher/profile"}>
+                        <img src="https://github.com/vini9457128.png" />
+                    </NavLink>
                     <span>{priceFormatter.format(userData?.balance!)}</span>
                 </div>
             </Header>
