@@ -17,9 +17,6 @@ export const globalStyles = globalCss({
             boxShadow: "0 0 0 2px $colors$primary500"
         }
     },
-    a: {
-        textDecoration: "none"
-    },
     "::selection": {
         backgroundColor: "#be123c70"
     },

@@ -1,6 +1,10 @@
 import { styled } from "../../../stitches.config";
 
-export const Container = styled("div", {});
+export const Container = styled("div", {
+    a: {
+        textDecoration: "none"
+    }
+});
 
 export const Header = styled("header", {
     backgroundColor: "$gray900",

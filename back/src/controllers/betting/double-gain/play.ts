@@ -44,10 +44,8 @@ export async function play(req: Request, res: Response): Promise<Response> {
 
         let randomColor: String = "";
 
-        if (randomNumber % 2 === 0) {
+        if (randomNumber <= 7) {
             randomColor = "red";
-        } else if (randomNumber === 0) {
-            randomColor == "red";
         } else {
             randomColor = "black";
         }

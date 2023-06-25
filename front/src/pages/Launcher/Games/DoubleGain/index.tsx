@@ -4,7 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../../../lib/axios";
 import { AxiosError } from "axios";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../contexts/UserContext";
 
 const playerOptionsFormSchema = z.object({
@@ -38,8 +38,8 @@ export function DoubleGain() {
             });
 
             console.log(data);
-            setOutcome(data.number);
-            spinWheel();
+
+            spinWheel(data.number);
 
             setTimeout(() => {
                 refreshUserData();
@@ -51,59 +51,53 @@ export function DoubleGain() {
         }
     }
 
-    const [outcome, setOutcome] = useState<number>(0);
-
-    const wheelRef = useRef<HTMLDivElement | null>(null);
-
     const order = [0, 11, 5, 10, 6, 9, 7, 8, 1, 14, 2, 13, 3, 12, 4];
-    const rows = 12;
-    const card = 75 + 3 * 2;
 
-    const cards = new Array(rows).fill(null).map((_, rowIdx) => (
-        <div className="row" key={rowIdx}>
-            {order.map((number, index) => (
-                <div
-                    key={index}
-                    className={`card ${
-                        number === 0
-                            ? "red"
-                            : index % 2 === 0
-                            ? "red"
-                            : "black"
-                    }`}
-                >
-                    {number}
-                </div>
-            ))}
-        </div>
-    ));
+    const [position, setPosition] = useState(0);
+    const [transform, setTransform] = useState("");
+    const [rotate, setRotate] = useState(false);
 
-    function spinWheel() {
-        const position = order.indexOf(outcome);
-        let landingPosition = rows * 15 * card + position * card;
-        let randomize = Math.floor(Math.random() * 75) - 75 / 2;
+    function spinWheel(roll: number) {
+        const index = order.indexOf(roll);
+        const rows = 12;
+        const card = 75 + 3 * 2;
+        let landingPosition = rows * 15 * card + index * card;
+        const randomize = Math.floor(Math.random() * 75) - 75 / 2;
         landingPosition = landingPosition + randomize;
+        setTransform(`translate3d(-${landingPosition}px, 0px, 0px)`);
+        setPosition(index);
+        setRotate(true);
+    }
 
-        const randomFactor = {
-            x: Math.floor(Math.random() * 50) / 100,
-            y: Math.floor(Math.random() * 20) / 100
-        };
-
-        if (wheelRef.current) {
-            wheelRef.current.style.transitionTimingFunction = `cubic-bezier(0,${randomFactor.x},${randomFactor.y},1)`;
-            wheelRef.current.style.transitionDuration = "6s";
-            wheelRef.current.style.transform = `translate3d(-${landingPosition}px, 0px, 0px)`;
-
+    useEffect(() => {
+        if (rotate) {
             setTimeout(() => {
-                if (wheelRef.current) {
-                    wheelRef.current.style.transitionTimingFunction = "";
-                    wheelRef.current.style.transitionDuration = "";
-                    const resetTo = -(position * card + randomize);
-                    wheelRef.current.style.transform = `translate3d(${resetTo}px, 0px, 0px)`;
-                }
+                const card = 75 + 3 * 2;
+                const randomize = Math.floor(Math.random() * 75) - 75 / 2;
+                const resetTo = -(position * card + randomize);
+                setTransform(`translate3d(${resetTo}px, 0px, 0px)`);
+                setRotate(false);
             }, 6 * 1000);
         }
-    }
+    }, [rotate, position]);
+
+    const cards = [
+        { value: 1, class: "red" },
+        { value: 14, class: "black" },
+        { value: 2, class: "red" },
+        { value: 13, class: "black" },
+        { value: 3, class: "red" },
+        { value: 12, class: "black" },
+        { value: 4, class: "red" },
+        { value: 0, class: "green" },
+        { value: 11, class: "black" },
+        { value: 5, class: "red" },
+        { value: 10, class: "black" },
+        { value: 6, class: "red" },
+        { value: 9, class: "black" },
+        { value: 7, class: "red" },
+        { value: 8, class: "black" }
+    ];
 
     return (
         <Container>
@@ -149,13 +143,32 @@ export function DoubleGain() {
 
                 <Roullete>
                     <div className="roulette-wrapper">
-                        <div className="selector"></div>
-                        <div className="wheel" ref={wheelRef}>
-                            {new Array(29).fill(cards)}
+                        <div
+                            className="wheel"
+                            style={{
+                                transform: transform,
+                                transition: rotate ? "6s" : "0s"
+                            }}
+                        >
+                            {[...Array(29)].map((_, i) => (
+                                <div className="row" key={i}>
+                                    {cards.map((card, j) => (
+                                        <div
+                                            className={`card ${card.class}`}
+                                            key={j}
+                                        >
+                                            {card.value}
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
                         </div>
+                        <div className="selector"></div>
                     </div>
                 </Roullete>
             </div>
         </Container>
     );
 }
+
+// <div className="selector"></div>
