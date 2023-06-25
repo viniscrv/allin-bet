@@ -87,9 +87,8 @@ export function Deposit() {
                             Informações adicionais
                         </span>
                         <p>
-                            Por se tratar de um projeto acadêmico, todas as
-                            transações são falsas e não envolvem nenhum risco
-                            real.
+                            Todas as transações são falsas e não envolvem nenhum
+                            risco real.
                         </p>
                         <p>
                             Por isso, sinta-se livre para adicionar quanto saldo

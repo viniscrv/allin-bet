@@ -46,7 +46,7 @@ export function Login() {
             localStorage.setItem("token", JSON.stringify(data.token));
             api.defaults.headers.Authorization = `Bearer ${data.token}`;
             toggleAuthenticatedState(true);
-            navigate("/launcher");
+            navigate("/launcher/home");
         } catch (err) {
             if (err instanceof AxiosError && err?.response?.data?.message) {
                 setInvalidCredentials(true);

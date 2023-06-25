@@ -38,7 +38,7 @@ export function DefaultLayout() {
     return (
         <Container>
             <Header>
-                <NavLink to={"/launcher/profile"}>
+                <NavLink to={"/launcher/home"}>
                     <img id="logo" src={logo} alt="" />
                 </NavLink>
                 <div>

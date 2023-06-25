@@ -8,6 +8,7 @@ import { Deposit } from "./pages/Launcher/Deposit";
 import { EditProfile } from "./pages/Launcher/EditProfile";
 import { Register } from "./pages/Register";
 import { DoubleGain } from "./pages/Launcher/Games/DoubleGain";
+import { Home } from "./pages/Launcher/Home";
 
 export function Router() {
     return (
@@ -16,9 +17,9 @@ export function Router() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* TODO: rotas protegidas */}
             <Route path="/launcher" element={<DefaultLayout />}>
                 {/* rotas com layout */}
+                <Route path="/launcher/home" element={<Home/>}/>
                 <Route path="/launcher/profile" element={<Profile/>}/>
                 <Route path="/launcher/edit-profile" element={<EditProfile/>}/>
                 <Route path="/launcher/history" element={<History/>}/>

@@ -6,8 +6,8 @@ export function Presentation() {
         <Container>
             <h1>Conecte-se com a sorte e aposte com confiança</h1>
             <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Consequatur et est magnam nam asperiores dolore nemo quibusdam.
+                Aventure-se nas apostas sem consequências reais! Explore
+                estratégias com saldo virtual e aproveite a diversão sem riscos.
             </p>
             <NavLink to="/login">
                 <button>Começar</button>

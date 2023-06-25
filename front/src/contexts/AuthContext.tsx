@@ -26,7 +26,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`;
             setAuthenticated(true);
 
-            navigate("/launcher/profile");
+            navigate("/launcher/home");
         }
 
         setLoading(false);
