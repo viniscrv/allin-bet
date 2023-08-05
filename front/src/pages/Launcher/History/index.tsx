@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { api } from "../../../lib/axios";
 import dayjs from "dayjs";
 import { priceFormatter } from "../../../utils/formatter";
+import Skeleton from "react-loading-skeleton";
 
 export function History() {
     interface dataType {
@@ -21,11 +22,14 @@ export function History() {
     }
 
     const [data, setData] = useState<dataType>();
+    const [loadingHistory, setLoadingHistory] = useState(false);
 
     useEffect(() => {
+        setLoadingHistory(true);
         const fetchData = async () => {
             const response = await api.get("/history");
             setData(response.data.userBets);
+            setLoadingHistory(false);
         };
 
         fetchData();
@@ -72,31 +76,56 @@ export function History() {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.Bet.map((bet, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td>
-                                        <span>
-                                            <Coins size={18} color="#8B8B8B" />
-                                            Double gain
-                                        </span>
-                                    </td>
-                                    <td>{priceFormatter.format(Number(bet.value))}</td>
-                                    {bet.isVictory && (
-                                        <td style={{ color: "#358e43" }}>
-                                            Vitória
+                        {loadingHistory ? (
+                            <tr>
+                                <td colSpan={4} style={{ padding: 0 }}>
+                                    {[1, 2, 3, 4, 5, 6].map(() => {
+                                        return (
+                                            <Skeleton
+                                                baseColor="#171717"
+                                                highlightColor="#202024"
+                                                borderRadius={4}
+                                                height={20}
+                                                duration={0.5}
+                                            />
+                                        );
+                                    })}
+                                </td>
+                            </tr>
+                        ) : (
+                            data?.Bet.map((bet, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>
+                                            <span>
+                                                <Coins
+                                                    size={18}
+                                                    color="#8B8B8B"
+                                                />
+                                                Double gain
+                                            </span>
                                         </td>
-                                    )}
-                                    {!bet.isVictory && (
-                                        <td style={{ color: "#D94848" }}>
-                                            Derrota
+                                        <td>
+                                            {priceFormatter.format(
+                                                Number(bet.value)
+                                            )}
                                         </td>
-                                    )}
+                                        {bet.isVictory && (
+                                            <td style={{ color: "#358e43" }}>
+                                                Vitória
+                                            </td>
+                                        )}
+                                        {!bet.isVictory && (
+                                            <td style={{ color: "#D94848" }}>
+                                                Derrota
+                                            </td>
+                                        )}
 
-                                    <td>{formatDate(bet.created_at)}</td>
-                                </tr>
-                            );
-                        })}
+                                        <td>{formatDate(bet.created_at)}</td>
+                                    </tr>
+                                );
+                            })
+                        )}
                     </tbody>
                 </table>
             </HistoryList>

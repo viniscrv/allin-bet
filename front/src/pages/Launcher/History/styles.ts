@@ -11,11 +11,10 @@ export const HistoryList = styled("div", {
     minWidth: 1000,
     maxHeight: "60vh",
     overflowY: "scroll",
-
+    
     table: {
         width: "100%",
         borderCollapse: "collapse",
-
         th: {
             backgroundColor: "$gray800",
             color: "$white",

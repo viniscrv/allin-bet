@@ -8,6 +8,7 @@ import { api } from "../../../lib/axios";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { UserContext } from "../../../contexts/UserContext";
+import InputMask from "react-input-mask";
 
 const cardInfoFormSchema = z.object({
     fullName: z
@@ -42,7 +43,7 @@ export function Deposit() {
 
     function submitLogin(data: CardInfoFormData) {
         const { cardNumber } = data;
-        
+
         if (!value) {
             alert("Adicione um saldo");
             return;
@@ -128,9 +129,10 @@ export function Deposit() {
                         </label>
                         <label>
                             Número do cartão:
-                            <input
-                                type="text"
+                            <InputMask
                                 placeholder="0000.0000.0000.0000"
+                                mask="9999.9999.9999.9999"
+                                maskPlaceholder=""
                                 {...register("cardNumber")}
                             />
                             {errors.cardNumber && (
@@ -142,11 +144,10 @@ export function Deposit() {
                         <div className="small-input">
                             <label>
                                 Data de validade:
-                                <input
-                                    maxLength={5}
-                                    minLength={5}
-                                    type="text"
+                                <InputMask
                                     placeholder="01/30"
+                                    mask="99/99"
+                                    maskPlaceholder=""
                                     {...register("expirationDate")}
                                 />
                                 {errors.expirationDate && (
