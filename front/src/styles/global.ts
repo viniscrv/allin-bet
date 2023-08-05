@@ -1,4 +1,5 @@
 import { globalCss } from "../../stitches.config";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export const globalStyles = globalCss({
     "*": {

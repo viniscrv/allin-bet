@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../lib/axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
+import { useState } from "react";
 
 const registerFormSchema = z
     .object({
@@ -26,6 +27,8 @@ type RegisterFormData = z.infer<typeof registerFormSchema>;
 export function Register() {
     const navigate = useNavigate();
 
+    const [loading, setLoading] = useState(false);
+
     const {
         register,
         handleSubmit,
@@ -40,6 +43,7 @@ export function Register() {
         email,
         password
     }: RegisterFormData) {
+        setLoading(true);
         handleRegister(username, summary, email, password);
     }
 
@@ -63,6 +67,8 @@ export function Register() {
             if (err instanceof AxiosError && err?.response?.data?.message) {
                 return console.log(err.response.data.message);
             }
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -123,7 +129,7 @@ export function Register() {
                     </span>
                 )}
 
-                <button type="submit" disabled={isSubmitting}>
+                <button type="submit" disabled={isSubmitting || loading}>
                     Criar Conta
                 </button>
             </form>

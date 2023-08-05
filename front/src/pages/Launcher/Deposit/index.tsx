@@ -10,14 +10,16 @@ import { AxiosError } from "axios";
 import { UserContext } from "../../../contexts/UserContext";
 
 const cardInfoFormSchema = z.object({
-    fullName: z.string().regex(/^[a-zA-Z]{5,}$/, { message: "Nome inválido" }),
+    fullName: z
+        .string()
+        .regex(/^[a-zA-ZÀ-ú\s]{5,}$/, { message: "Nome inválido" }),
     cardNumber: z
         .string()
         .regex(/^\d{4}\.\d{4}\.\d{4}\.\d{4}$/, { message: "Formato inválido" }),
     expirationDate: z
         .string()
         .regex(/^\d{2}\/\d{2}$/, { message: "Data inválida" }),
-    securityCode: z.number()
+    securityCode: z.number().positive().int()
 });
 
 type CardInfoFormData = z.infer<typeof cardInfoFormSchema>;
@@ -40,7 +42,7 @@ export function Deposit() {
 
     function submitLogin(data: CardInfoFormData) {
         const { cardNumber } = data;
-        
+
         setLoading(true);
         confirmPayment(cardNumber, value);
     }
@@ -56,13 +58,14 @@ export function Deposit() {
                 value
             });
 
-            setLoading(false);
             refreshUserData();
             navigate("/launcher/profile");
         } catch (err) {
             if (err instanceof AxiosError && err?.response?.data?.message) {
                 return console.log(err.response.data.message);
             }
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -135,6 +138,8 @@ export function Deposit() {
                             <label>
                                 Data de validade:
                                 <input
+                                    maxLength={5}
+                                    minLength={5}
                                     type="text"
                                     placeholder="01/30"
                                     {...register("expirationDate")}
@@ -148,6 +153,8 @@ export function Deposit() {
                             <label>
                                 Código de segurança:
                                 <input
+                                    maxLength={3}
+                                    minLength={3}
                                     type="text"
                                     placeholder="000"
                                     {...register("securityCode", {

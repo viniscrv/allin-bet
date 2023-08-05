@@ -10,6 +10,7 @@ import { AuthContext } from "./AuthContext";
 
 interface UserContextType {
     userData?: userDataType;
+    loadingUserData: boolean;
     usernameCapitalized: string;
     refreshUserData: () => void;
 }
@@ -32,6 +33,7 @@ export function UserProvider({ children }: UserProviderProps) {
     const [userData, setData] = useState<userDataType>();
 
     const [updateUserData, setUpdateUserData] = useState(0);
+    const [loadingUserData, setLoadingUserData] = useState(false);
 
     function refreshUserData() {
         setUpdateUserData(updateUserData + 1);
@@ -41,9 +43,13 @@ export function UserProvider({ children }: UserProviderProps) {
 
     useEffect(() => {
         if (authenticated) {
+            setLoadingUserData(true);
+
             const fetchData = async () => {
                 const response = await api.get("/me");
                 setData(response.data.user);
+
+                setLoadingUserData(false);
             };
 
             fetchData();
@@ -60,7 +66,7 @@ export function UserProvider({ children }: UserProviderProps) {
 
     return (
         <UserContext.Provider
-            value={{ usernameCapitalized, userData, refreshUserData }}
+            value={{ usernameCapitalized, userData, loadingUserData, refreshUserData }}
         >
             {children}
         </UserContext.Provider>

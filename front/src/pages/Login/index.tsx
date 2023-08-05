@@ -48,10 +48,13 @@ export function Login() {
             toggleAuthenticatedState(true);
             navigate("/launcher/home");
         } catch (err) {
+
             if (err instanceof AxiosError && err?.response?.data?.message) {
                 setInvalidCredentials(true);
                 return console.log(err.response.data.message);
             }
+        } finally {
+            setLoading(false);
         }
     }
 

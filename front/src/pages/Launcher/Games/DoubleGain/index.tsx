@@ -40,20 +40,20 @@ export function DoubleGain() {
                 color
             });
 
-            console.log(data);
-
             spinWheel(data.number);
             setIsButtonDisabled(true);
-            setLoading(false);
 
             setTimeout(() => {
                 setIsButtonDisabled(false);
                 refreshUserData();
             }, 6 * 1000);
         } catch (err) {
+
             if (err instanceof AxiosError && err?.response?.data?.message) {
                 return console.log(err.response.data.message);
             }
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -113,6 +113,7 @@ export function DoubleGain() {
                 <form onSubmit={handleSubmit(startGame)}>
                     <span>Quantia:</span>
                     <input
+                        placeholder="R$ 0,00"
                         type="text"
                         style={{ textAlign: "right" }}
                         {...register("value", { valueAsNumber: true })}

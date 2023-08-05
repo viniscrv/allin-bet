@@ -15,10 +15,12 @@ import { api } from "../../lib/axios";
 import { UserContext } from "../../contexts/UserContext";
 import { priceFormatter } from "../../utils/formatter";
 import logo from "../../assets/logo.jpg";
+import Skeleton from "react-loading-skeleton";
 
 export function DefaultLayout() {
     const { toggleAuthenticatedState, authenticated } = useContext(AuthContext);
-    const { userData, usernameCapitalized } = useContext(UserContext);
+    const { userData, usernameCapitalized, loadingUserData } =
+        useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -45,7 +47,19 @@ export function DefaultLayout() {
                     <NavLink to={"/launcher/profile"}>
                         <img src="https://github.com/vini9457128.png" />
                     </NavLink>
-                    <span>{priceFormatter.format(userData?.balance!)}</span>
+                    <span>
+                        {loadingUserData ? (
+                            <Skeleton
+                                width={80}
+                                baseColor="#171717"
+                                highlightColor="#202024"
+                                borderRadius={4}
+                                height={30}
+                            />
+                        ) : (
+                            priceFormatter.format(userData?.balance!)
+                        )}
+                    </span>
                 </div>
             </Header>
             <Content>
