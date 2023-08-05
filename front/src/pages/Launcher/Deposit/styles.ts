@@ -3,17 +3,14 @@ import { styled } from "../../../../stitches.config";
 export const Container = styled("div", {
     width: "100%",
     maxWidth: "1000px",
-
     h1: {
         marginBottom: "1rem"
     },
-
     section: {
         display: "grid",
         gridTemplateColumns: "repeat(2, 1fr)",
         gap: "1rem"
     },
-
     input: {
         marginTop: ".5rem",
         backgroundColor: "transparent",
@@ -25,6 +22,16 @@ export const Container = styled("div", {
         "&::placeholder": {
             fontSize: "$sm"
         }
+    },
+
+    "@bp1": {
+        padding: "0 1rem",
+        h1: {
+            margin: "1rem 0"
+        },
+        section: {
+            gridTemplateColumns: "1fr"
+        }
     }
 });
 
@@ -32,7 +39,6 @@ export const PurchaseInfo = styled("div", {
     display: "flex",
     flexDirection: "column",
     gap: "1rem",
-
     ".payment-method": {
         backgroundColor: "$gray800",
         border: "1px solid $gray200",
@@ -40,9 +46,8 @@ export const PurchaseInfo = styled("div", {
         padding: 18,
 
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "space-between"
     },
-
     div: {
         backgroundColor: "$gray800",
         border: "1px solid $gray200",
@@ -73,6 +78,10 @@ export const PurchaseInfo = styled("div", {
             color: "$gray300",
             gap: 8
         }
+    },
+
+    "@bp1": {
+        maxWidth: "90vw"
     }
 });
 
@@ -80,35 +89,29 @@ export const CardInfo = styled("div", {
     display: "flex",
     flexDirection: "column",
     gap: "1rem",
-
     h2: {
         lineHeight: 0.9
     },
-
     form: {
         backgroundColor: "$gray800",
         border: "1px solid $gray200",
         borderRadius: 6,
         padding: 18,
-
         label: {
             marginTop: ".5rem",
             display: "flex",
             flexDirection: "column"
         },
-
         ".small-input": {
             display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
             gap: "1rem"
         },
-
         ".invalid": {
             color: "$red700",
             fontSize: 14,
-            marginTop: ".5rem",
+            marginTop: ".5rem"
         },
-
         button: {
             marginTop: "1rem",
             backgroundColor: "$primary500",
@@ -128,6 +131,14 @@ export const CardInfo = styled("div", {
 
             "&:disabled": {
                 opacity: "0.5"
+            }
+        }
+    },
+    "@bp1": {
+        maxWidth: "90vw",
+        form: {
+            ".small-input": {
+                gridTemplateColumns: "1fr"
             }
         }
     }

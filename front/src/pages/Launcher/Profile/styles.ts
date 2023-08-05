@@ -8,7 +8,7 @@ export const Container = styled("div", {
         backgroundColor: "$gray800",
         border: "1px solid $gray200",
         borderRadius: 6,
-        padding: 18, 
+        padding: 18,
         display: "flex",
         flexWrap: "wrap",
         alignItems: "center",
@@ -55,6 +55,18 @@ export const Container = styled("div", {
             "&:hover": {
                 backgroundColor: "$primary400",
                 transform: "scale(1.1)"
+            }
+        }
+    },
+
+    "@bp1": {
+        padding: "0 1rem",
+        h1: {
+            margin: "1rem 0"
+        },
+        main: {
+            img: {
+                margin: "0 auto"
             }
         }
     }

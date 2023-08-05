@@ -57,6 +57,26 @@ export const Container = styled("div", {
                 }
             }
         }
+    },
+
+    "@bp1": {
+        padding: "0 1rem",
+        h1: {
+            margin: "1rem 0"
+        },
+        ".game-container": {
+            width: "100%",
+            maxWidth: "90vw",
+            flexDirection: "column",
+            form: {
+                border: 0,
+                ".start-game-button": {
+                    width: "100%",
+                    margin: "1rem 0",
+                    flex: 1
+                }
+            }
+        }
     }
 });
 
@@ -156,6 +176,14 @@ export const Roullete = styled("div", {
 
         "&.black": {
             background: "#2d3035"
+        }
+    },
+
+    "@bp1": {
+        padding: "2rem 0",
+        ".roulette-wrapper": {
+            width: "85vw",
+            padding: "0 1rem"
         }
     }
 });

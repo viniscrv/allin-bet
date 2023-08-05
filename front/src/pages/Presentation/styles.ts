@@ -37,5 +37,9 @@ export const Container = styled("div", {
     },
     a: {
         fontSize: "$sm"
+    },
+
+    "@bp1": {
+        padding: "0 16px"
     }
 });

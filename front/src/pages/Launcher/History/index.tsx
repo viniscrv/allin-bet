@@ -79,9 +79,10 @@ export function History() {
                         {loadingHistory ? (
                             <tr>
                                 <td colSpan={4} style={{ padding: 0 }}>
-                                    {[1, 2, 3, 4, 5, 6].map(() => {
+                                    {[1, 2, 3, 4, 5, 6].map((i) => {
                                         return (
                                             <Skeleton
+                                                key={i}
                                                 baseColor="#171717"
                                                 highlightColor="#202024"
                                                 borderRadius={4}

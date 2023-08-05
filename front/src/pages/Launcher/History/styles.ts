@@ -2,15 +2,20 @@ import { styled } from "../../../../stitches.config";
 
 export const Container = styled("div", {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+
+    "@bp1": {
+        h1: {
+            margin: "1rem"
+        },
+    }
 });
 
 export const HistoryList = styled("div", {
-    paddingTop: 18,
+    maxHeight: "60vh",
     overflow: "auto",
     minWidth: 1000,
-    maxHeight: "60vh",
-    overflowY: "scroll",
+    paddingTop: 16,
     
     table: {
         width: "100%",
@@ -56,6 +61,20 @@ export const HistoryList = styled("div", {
             },
             "&:last-child": {
                 paddingRight: 22
+            }
+        }
+    },
+
+    "@bp1": {
+        minWidth: "auto",
+        maxHeight: "90vh",
+        padding: "0 1rem",
+        
+        table: {
+            td: {
+                "&:first-child": {
+                    width: "max-content",
+                },
             }
         }
     }

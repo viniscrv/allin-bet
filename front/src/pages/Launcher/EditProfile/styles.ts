@@ -69,22 +69,26 @@ export const Container = styled("div", {
                 gridTemplateColumns: "repeat(2, 1fr)",
                 gap: "1rem"
             }
-        },
-        ".customFileUpload": {
-            backgroundColor: "$primary500",
-            border: "none",
-            borderRadius: 6,
-            padding: "16px 84px",
-            fontWeight: "bold",
-            cursor: "pointer",
-            fontSize: "$sm",
-            transition: "all .2s",
-            width: "min-content",
-            alignSelf: "center",
-            textAlign: "center",
+        }
+    },
 
-            "&:hover": {
-                backgroundColor: "$primary400"
+    "@bp1": {
+        padding: "0 1rem",
+        h1: {
+            margin: "1rem 0"
+        },
+        main: {
+            width: "90vw",
+            padding: "1rem",
+            form: {
+                width: "100%",
+                ".small-input": {
+                    gridTemplateColumns: "repeat(1, 1fr)"
+                }
+            },
+            button: {
+                flex: 1,
+                marginBottom: "1rem"
             }
         }
     }

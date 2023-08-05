@@ -31,5 +31,8 @@ export const {
             lg3: "28px",
             lg4: "32px"
         }
+    },
+    media: {
+        bp1: "(max-width: 1290px)",
     }
 });

@@ -60,30 +60,12 @@ export function EditProfile() {
         }
     }
 
-    // const [selectedFile, setSelectedFile] = useState<string | null>(null);
-
-    // function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-    //     if (event.target.files && event.target.files.length > 0) {
-    //         setSelectedFile(URL.createObjectURL(event.target.files[0]));
-    //     }
-    // }
-
     return (
         <Container>
             <h1>Editar perfil</h1>
 
             <main>
                 <img src={"https://github.com/vini9457128.png"} />
-                {/* <label htmlFor="fileUpload" className="customFileUpload">
-                    Selecionar nova foto
-                </label>
-                <input
-                    type="file"
-                    id="fileUpload"
-                    style={{ display: "none" }}
-                    onChange={handleFileChange}
-                /> */}
-
                 <form onSubmit={handleSubmit(submitForm)}>
                     <label>
                         Nome de usuário

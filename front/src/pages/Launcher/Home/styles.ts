@@ -15,5 +15,10 @@ export const Container = styled("div", {
     },
     "span, a": {
         color: "$primary500"
+    },
+
+    "@bp1": {
+        width: "100%",
+        padding: "0 16px"
     }
 });

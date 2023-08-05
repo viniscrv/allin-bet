@@ -17,9 +17,16 @@ export const Header = styled("header", {
     padding: "20px 60px",
 
     "#logo": {
-        width: 100
+        img: {
+            width: 100
+        }
     },
-
+    "#menu-btn": {
+        all: "unset",
+        display: "none",
+        backgroundColor: "transparent",
+        cursor: "pointer"
+    },
     div: {
         display: "flex",
         alignItems: "center",
@@ -33,6 +40,15 @@ export const Header = styled("header", {
         span: {
             fontSize: "$lg",
             fontWeight: "bold"
+        }
+    },
+
+    "@bp1": {
+        "#logo": {
+            display: "none"
+        },
+        "#menu-btn": {
+            display: "block"
         }
     }
 });
@@ -57,16 +73,17 @@ export const Aside = styled("aside", {
 
         span: {
             fontSize: "$lg",
-            borderBottom: "1px solid $gray300",
             width: "100%",
-            padding: 3,
-            paddingBottom: 10
+            padding: 3
         },
         ul: {
+            listStyle: "none",
             display: "flex",
             flexDirection: "column",
+            borderTop: "1px solid $gray200",
+            paddingTop: 14,
+            marginTop: 14,
             gap: 6,
-            listStyle: "none",
 
             a: {
                 "&.active": {
@@ -111,6 +128,36 @@ export const Aside = styled("aside", {
         alignItems: "center",
         gap: 3,
         marginBottom: 32
+    },
+
+    "@bp1": {
+        display: "none"
+    },
+
+    variants: {
+        collapsable: {
+            true: {
+                transition: "all .5",
+                height: "100vh",
+                display: "block",
+                position: "absolute",
+                backgroundColor: "$gray900",
+                border: "none",
+                borderRight: "1px solid $gray200",
+                borderRadius: 0,
+                fontSize: "$md",
+                zIndex: 10,
+                nav: {
+                    ul: {
+                        gap: 10
+                    }
+                },
+                ".logout": {
+                    width: "min-content",
+                    margin: "4rem auto",
+                },
+            }
+        }
     }
 });
 
@@ -118,7 +165,13 @@ export const Content = styled("div", {
     display: "flex",
     margin: 12,
     section: {
-        // marginLeft: 20
         margin: "0 auto"
+    },
+
+    "@bp1": {
+        margin: "0 auto",
+        section: {
+            overflowX: "hidden"
+        }
     }
 });
