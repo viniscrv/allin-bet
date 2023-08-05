@@ -28,5 +28,10 @@ export const globalStyles = globalCss({
     },
     "::-webkit-scrollbar-thumb": {
         background: "$gray800"
+    },
+    button: {
+        "&:disabled": {
+            cursor: "not-allowed !important"
+        }
     }
 });

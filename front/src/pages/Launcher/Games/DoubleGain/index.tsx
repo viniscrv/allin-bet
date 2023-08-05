@@ -16,6 +16,7 @@ type playerOptionsFormData = z.infer<typeof playerOptionsFormSchema>;
 
 export function DoubleGain() {
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const {
         register,
@@ -26,6 +27,7 @@ export function DoubleGain() {
     });
 
     function startGame({ value, color }: playerOptionsFormData) {
+        setLoading(true);
         sendGameOptions(value, color);
     }
 
@@ -42,6 +44,7 @@ export function DoubleGain() {
 
             spinWheel(data.number);
             setIsButtonDisabled(true);
+            setLoading(false);
 
             setTimeout(() => {
                 setIsButtonDisabled(false);
@@ -141,7 +144,7 @@ export function DoubleGain() {
 
                     <button
                         className="start-game-button"
-                        disabled={isButtonDisabled}
+                        disabled={isButtonDisabled || loading}
                     >
                         Começar jogo
                     </button>

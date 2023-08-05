@@ -24,6 +24,7 @@ type CardInfoFormData = z.infer<typeof cardInfoFormSchema>;
 
 export function Deposit() {
     const [value, setValue] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     const {
         register,
@@ -39,7 +40,8 @@ export function Deposit() {
 
     function submitLogin(data: CardInfoFormData) {
         const { cardNumber } = data;
-
+        
+        setLoading(true);
         confirmPayment(cardNumber, value);
     }
 
@@ -54,6 +56,7 @@ export function Deposit() {
                 value
             });
 
+            setLoading(false);
             refreshUserData();
             navigate("/launcher/profile");
         } catch (err) {
@@ -159,7 +162,7 @@ export function Deposit() {
                             </label>
                         </div>
 
-                        <button disabled={isSubmitting}>
+                        <button disabled={isSubmitting || loading}>
                             Finalizar compra
                         </button>
                     </form>

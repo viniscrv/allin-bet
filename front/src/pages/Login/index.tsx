@@ -19,6 +19,7 @@ export function Login() {
     const { toggleAuthenticatedState } = useContext(AuthContext);
 
     const [invalidCredentials, setInvalidCredentials] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -31,18 +32,17 @@ export function Login() {
     });
 
     function submitLogin(data: LoginFormData) {
+        setLoading(true);
         handleLogin(data.username, data.password);
     }
 
     async function handleLogin(username: string, password: string) {
-        console.log(username, password);
-
         try {
             const { data } = await api.post("/login", {
                 username,
                 password
             });
-
+            
             localStorage.setItem("token", JSON.stringify(data.token));
             api.defaults.headers.Authorization = `Bearer ${data.token}`;
             toggleAuthenticatedState(true);
@@ -77,7 +77,7 @@ export function Login() {
                     {...register("password")}
                 />
 
-                <button type="submit" disabled={isSubmitting}>
+                <button type="submit" disabled={isSubmitting || loading}>
                     Entrar
                 </button>
             </form>
