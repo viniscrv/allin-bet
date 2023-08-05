@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 const profileSchema = z.object({
     username: z.string().nullable(),
     summary: z.string().nullable(),
-    email: z.string().email().nullable(),
+    email: z.string().nullable(),
     password: z.string().nullable(),
     passwordConfirmation: z.string().nullable()
 });
@@ -40,10 +40,10 @@ export function EditProfile() {
 
         try {
             await api.put("/edit", {
-                username: username ? username : null,
-                summary: summary ? summary : null,
-                email: email ? email : null,
-                password: password ? password : null
+                username: username || null,
+                summary: summary || null,
+                email: email || null,
+                password: password || null
             });
 
             refreshUserData();

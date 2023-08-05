@@ -6,6 +6,7 @@ import { UserContext } from "../../../contexts/UserContext";
 import { NavLink } from "react-router-dom";
 import { api } from "../../../lib/axios";
 import { priceFormatter } from "../../../utils/formatter";
+import Skeleton from "react-loading-skeleton";
 
 export function Profile() {
     const { userData, usernameCapitalized } = useContext(UserContext);
@@ -18,11 +19,15 @@ export function Profile() {
     }
 
     const [metricsData, setMetricsData] = useState<metricsType>();
+    const [loadingMetricsData, setLoadingMetricsData] = useState(false);
 
     useEffect(() => {
+        setLoadingMetricsData(true);
         const fetchData = async () => {
             const response = await api.get("/metrics");
             setMetricsData(response.data);
+
+            setLoadingMetricsData(false);
         };
 
         fetchData();
@@ -57,14 +62,36 @@ export function Profile() {
                     <p>Total de ganhos</p>
                     <span>
                         <CaretDoubleUp size={16} weight="bold" />
-                        {priceFormatter.format(metricsData?.totalProfit!)}
+                        {loadingMetricsData ? (
+                            <Skeleton
+                                width={50}
+                                height={25}
+                                baseColor="#202024"
+                                highlightColor="#454546"
+                                borderRadius={4}
+                                duration={.5}
+                            />
+                        ) : (
+                            priceFormatter.format(metricsData?.totalProfit!)
+                        )}
                     </span>
                 </div>
                 <div>
                     <p>Total de perdas</p>
                     <span>
                         <CaretDoubleDown size={16} weight="bold" />
-                        {priceFormatter.format(metricsData?.totalLosses!)}
+                        {loadingMetricsData ? (
+                            <Skeleton
+                                width={50}
+                                height={25}
+                                baseColor="#202024"
+                                highlightColor="#454546"
+                                borderRadius={4}
+                                duration={.5}
+                            />
+                        ) : (
+                            priceFormatter.format(metricsData?.totalLosses!)
+                        )}
                     </span>
                 </div>
             </Statistics>

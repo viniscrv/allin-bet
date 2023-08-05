@@ -55,6 +55,7 @@ export function DefaultLayout() {
                                 highlightColor="#202024"
                                 borderRadius={4}
                                 height={30}
+                                duration={0.5}
                             />
                         ) : (
                             priceFormatter.format(userData?.balance!)
@@ -67,7 +68,9 @@ export function DefaultLayout() {
                     <nav>
                         <span>{usernameCapitalized}</span>
                         <ul>
-                            <NavLink to={"/launcher/profile"}>
+                            <NavLink
+                                to={"/launcher/profile"}
+                            >
                                 <li>
                                     <UserCircle size={18} color="#8B8B8B" />
                                     Ver perfil

@@ -58,6 +58,10 @@ export function Login() {
         }
     }
 
+    function forgetedPassword() {
+        alert("👏");
+    }
+
     return (
         <Container>
             <h1>Entrar</h1>
@@ -88,7 +92,7 @@ export function Login() {
                 Ainda não tem uma conta?
                 <NavLink to={"/register"}>Criar conta</NavLink>
             </p>
-            <a href="#">Esqueceu sua senha?</a>
+            <a href="#" onClick={forgetedPassword}>Esqueceu sua senha?</a>
         </Container>
     );
 }

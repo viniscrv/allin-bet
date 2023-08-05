@@ -26,7 +26,7 @@ export const Header = styled("header", {
         gap: "1rem",
         img: {
             width: 60,
-            border: "2px dashed $primary500",
+            border: "2px solid $primary500",
             borderRadius: "100%",
             cursor: "pointer"
         },
@@ -59,7 +59,8 @@ export const Aside = styled("aside", {
             fontSize: "$lg",
             borderBottom: "1px solid $gray300",
             width: "100%",
-            padding: 3
+            padding: 3,
+            paddingBottom: 10
         },
         ul: {
             display: "flex",
@@ -67,15 +68,36 @@ export const Aside = styled("aside", {
             gap: 6,
             listStyle: "none",
 
-            li: {
-                color: "$gray300",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 3,
+            a: {
+                "&.active": {
+                    svg: {
+                        fill: "$primary400"
+                    },
+                    li: {
+                        color: "$primary400",
+                        cursor: "default",
 
-                "&:hover": {
-                    color: "$white"
+                        "&:hover": {
+                            color: "$primary400",
+                            svg: {
+                                fill: "$primary400"
+                            }
+                        }
+                    }
+                },
+                li: {
+                    color: "$gray300",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 3,
+
+                    "&:hover": {
+                        color: "$white",
+                        svg: {
+                            fill: "$white"
+                        }
+                    }
                 }
             }
         }

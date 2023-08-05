@@ -7,20 +7,19 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useState } from "react";
 
-const registerFormSchema = z
-    .object({
-        username: z.string(),
-        email: z.string().email(),
-        summary: z.string(),
-        password: z.string(),
-        passwordConfirmation: z
-            .string()
-            .refine((val) => val.length > 0, "Required field")
-    })
-    .refine((data) => data.password === data.passwordConfirmation, {
-        message: "Senhas não coincidem",
-        path: ["passwordConfirmation"]
-    });
+const registerFormSchema = z.object({
+    username: z
+        .string()
+        .min(3, { message: "Seu username deve conter ao menos 3 caracteres" }),
+    email: z.string().email({ message: "E-mail inválido" }),
+    summary: z
+        .string()
+        .min(3, "Sua biografia deve conter ao menos 3 caracteres"),
+    password: z
+        .string()
+        .min(6, { message: "Sua senha deve conter ao menos 6 caracteres" }),
+    passwordConfirmation: z.string()
+});
 
 type RegisterFormData = z.infer<typeof registerFormSchema>;
 
@@ -28,6 +27,7 @@ export function Register() {
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
+    const [passwordsDoNotMatch, setPasswordsDoNotMatch] = useState(false);
 
     const {
         register,
@@ -41,8 +41,16 @@ export function Register() {
         username,
         summary,
         email,
-        password
+        password,
+        passwordConfirmation
     }: RegisterFormData) {
+        if (password !== passwordConfirmation) {
+            setPasswordsDoNotMatch(true);
+            return;
+        }
+
+        setPasswordsDoNotMatch(false);
+
         setLoading(true);
         handleRegister(username, summary, email, password);
     }
@@ -78,56 +86,62 @@ export function Register() {
             <span>Bem-vindo(a)! Crie sua conta.</span>
 
             <form onSubmit={handleSubmit(submitRegister)}>
-                <input
-                    type="text"
-                    placeholder="Nome"
-                    {...register("username")}
-                />
-                {errors.passwordConfirmation && (
-                    <span className="invalid">
-                        {errors.passwordConfirmation.message}
-                    </span>
-                )}
-                <input
-                    type="text"
-                    placeholder="Biografia"
-                    {...register("summary")}
-                />
-                {errors.passwordConfirmation && (
-                    <span className="invalid">
-                        {errors.passwordConfirmation.message}
-                    </span>
-                )}
-                <input
-                    type="email"
-                    placeholder="Email"
-                    {...register("email")}
-                />
-                {errors.passwordConfirmation && (
-                    <span className="invalid">
-                        {errors.passwordConfirmation.message}
-                    </span>
-                )}
-                <input
-                    type="password"
-                    placeholder="Senha"
-                    {...register("password")}
-                />
-                {errors.passwordConfirmation && (
-                    <span className="invalid">
-                        {errors.passwordConfirmation.message}
-                    </span>
-                )}
-                <input
-                    type="password"
-                    placeholder="Confirmação da Senha"
-                    {...register("passwordConfirmation")}
-                />
-                {errors.passwordConfirmation && (
-                    <span className="invalid">
-                        {errors.passwordConfirmation.message}
-                    </span>
-                )}
+                <div>
+                    {errors.username && (
+                        <span className="invalid">
+                            {errors.username.message}
+                        </span>
+                    )}
+                    <input
+                        type="text"
+                        placeholder="Nome"
+                        {...register("username")}
+                    />
+                </div>
+                <div>
+                    {errors.summary && (
+                        <span className="invalid">
+                            {errors.summary.message}
+                        </span>
+                    )}
+                    <input
+                        type="text"
+                        placeholder="Biografia"
+                        {...register("summary")}
+                    />
+                </div>
+                <div>
+                    {errors.email && (
+                        <span className="invalid">{errors.email.message}</span>
+                    )}
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        {...register("email")}
+                    />
+                </div>
+                <div>
+                    {errors.password && (
+                        <span className="invalid">
+                            {errors.password.message}
+                        </span>
+                    )}
+                    <input
+                        type="password"
+                        placeholder="Senha"
+                        {...register("password")}
+                    />
+                </div>
+                <div>
+                    {passwordsDoNotMatch && (
+                        <span className="invalid">Senhas não coincidem</span>
+                    )}
+                    <input
+                        type="password"
+                        placeholder="Confirmação da Senha"
+                        {...register("passwordConfirmation")}
+                    />
+                </div>
 
                 <button type="submit" disabled={isSubmitting || loading}>
                     Criar Conta

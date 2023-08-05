@@ -25,7 +25,7 @@ const cardInfoFormSchema = z.object({
 type CardInfoFormData = z.infer<typeof cardInfoFormSchema>;
 
 export function Deposit() {
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
 
     const {
@@ -42,6 +42,11 @@ export function Deposit() {
 
     function submitLogin(data: CardInfoFormData) {
         const { cardNumber } = data;
+        
+        if (!value) {
+            alert("Adicione um saldo");
+            return;
+        }
 
         setLoading(true);
         confirmPayment(cardNumber, value);
@@ -84,8 +89,8 @@ export function Deposit() {
                         <h3>Selecione a quantia que deseja adicionar:</h3>
                         <input
                             type="text"
-                            placeholder="00,00"
-                            value={value}
+                            placeholder="R$ 0,00"
+                            value={value || ""}
                             onChange={handleChangeValue}
                         />
                         <span>
