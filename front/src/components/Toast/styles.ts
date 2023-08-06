@@ -34,6 +34,7 @@ export const Container = styled("div", {
         alignItems: "center",
         justifyContent: "space-between",
         border: "1px solid $gray200",
+        backgroundColor: "$gray900",
         borderRadius: "4px",
         gap: 10,
 
