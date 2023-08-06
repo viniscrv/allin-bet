@@ -18,6 +18,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { priceFormatter } from "../../utils/formatter";
 import logo from "../../assets/logo.jpg";
 import Skeleton from "react-loading-skeleton";
+import { Toast } from "../../components/Toast";
 
 export function DefaultLayout() {
     const [openSidebar, setOpenSidebar] = useState(false);
@@ -91,7 +92,7 @@ export function DefaultLayout() {
                 </NavLink>
 
                 <button id="menu-btn" onClick={handleOpenSidebar}>
-                    {openSidebar ? <X size={38} /> : <List size={38} /> }
+                    {openSidebar ? <X size={38} /> : <List size={38} />}
                 </button>
                 <div>
                     <NavLink to={"/launcher/profile"}>
@@ -123,7 +124,10 @@ export function DefaultLayout() {
                                     <ul>
                                         {section.pages.map((page) => {
                                             return (
-                                                <NavLink to={page.path} key={page.title}>
+                                                <NavLink
+                                                    to={page.path}
+                                                    key={page.title}
+                                                >
                                                     <li>
                                                         {page.icon}
                                                         {page.title}
@@ -145,6 +149,7 @@ export function DefaultLayout() {
                     <Outlet />
                 </section>
             </Content>
+            <Toast />
         </Container>
     );
 }

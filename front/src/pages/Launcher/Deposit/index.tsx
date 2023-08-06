@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { UserContext } from "../../../contexts/UserContext";
 import InputMask from "react-input-mask";
+import { ToastContext } from "../../../contexts/ToastContext";
 
 const cardInfoFormSchema = z.object({
     fullName: z
@@ -45,7 +46,11 @@ export function Deposit() {
         const { cardNumber } = data;
 
         if (!value) {
-            alert("Adicione um saldo");
+            shootToast({
+                title: "Saldo vazio",
+                description: "Você não inseriu nenhum valor para ser adicionado",
+                color: "red"
+            });
             return;
         }
 
@@ -56,6 +61,7 @@ export function Deposit() {
     const navigate = useNavigate();
 
     const { refreshUserData } = useContext(UserContext);
+    const { shootToast } = useContext(ToastContext);
 
     async function confirmPayment(cardNumber: string, value: number) {
         try {
@@ -65,11 +71,23 @@ export function Deposit() {
             });
 
             refreshUserData();
+            shootToast({
+                title: "Sucesso",
+                description: "Saldo adicionado com sucesso ;)",
+                color: "green"
+            });
+
             navigate("/launcher/profile");
         } catch (err) {
             if (err instanceof AxiosError && err?.response?.data?.message) {
                 return console.log(err.response.data.message);
             }
+
+            shootToast({
+                title: "Erro",
+                description: "Ocorreu algum erro",
+                color: "green"
+            });
         } finally {
             setLoading(false);
         }

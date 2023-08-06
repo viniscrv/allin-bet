@@ -6,6 +6,7 @@ import { api } from "../../../../lib/axios";
 import { AxiosError } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../contexts/UserContext";
+import { ToastContext } from "../../../../contexts/ToastContext";
 
 const playerOptionsFormSchema = z.object({
     value: z.number(),
@@ -18,11 +19,7 @@ export function DoubleGain() {
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const {
-        register,
-        handleSubmit,
-        control
-    } = useForm<playerOptionsFormData>({
+    const { register, handleSubmit, control } = useForm<playerOptionsFormData>({
         resolver: zodResolver(playerOptionsFormSchema)
     });
 
@@ -32,6 +29,7 @@ export function DoubleGain() {
     }
 
     const { refreshUserData } = useContext(UserContext);
+    const { shootToast } = useContext(ToastContext);
 
     async function sendGameOptions(value: number, color: string) {
         try {
@@ -46,9 +44,22 @@ export function DoubleGain() {
             setTimeout(() => {
                 setIsButtonDisabled(false);
                 refreshUserData();
+
+                if (Object.keys(data).includes("gains")) {
+                    return shootToast({
+                        title: "Vitória!",
+                        description: "Parabéns, você venceu e seu saldo foi atualizado",
+                        color: "green"
+                    });
+                }
+
+                shootToast({
+                    title: "Não foi dessa vez",
+                    description: "Infelizmente você perdeu desta vez",
+                    color: "red"
+                });
             }, 6 * 1000);
         } catch (err) {
-
             if (err instanceof AxiosError && err?.response?.data?.message) {
                 return console.log(err.response.data.message);
             }

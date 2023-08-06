@@ -6,6 +6,7 @@ import { api } from "../../../lib/axios";
 import { useContext } from "react";
 import { UserContext } from "../../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { ToastContext } from "../../../contexts/ToastContext";
 
 const profileSchema = z.object({
     username: z.string().nullable(),
@@ -28,6 +29,7 @@ export function EditProfile() {
     const navigate = useNavigate();
 
     const { refreshUserData } = useContext(UserContext);
+    const { shootToast } = useContext(ToastContext);
 
     async function submitForm(data: ProfileFormData) {
         const { username, summary, email, password, passwordConfirmation } =
@@ -47,8 +49,19 @@ export function EditProfile() {
             });
 
             refreshUserData();
+            shootToast({
+                title: "Perfil atualizado",
+                description: "Suas informações foram atualizadas ;)",
+                color: "green"
+            });
+
             navigate("/launcher/profile");
         } catch (error: any) {
+            shootToast({
+                title: "Erro",
+                description: "Ocorreu algum erro",
+                color: "red"
+            });
             if (error.response && error.response.data) {
                 console.error(
                     "Erro ao registrar usuário:",

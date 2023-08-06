@@ -1,4 +1,4 @@
-import { styled } from "../../../stitches.config";
+import { keyframes, styled } from "../../../stitches.config";
 
 export const Container = styled("div", {
     a: {
@@ -53,12 +53,50 @@ export const Header = styled("header", {
     }
 });
 
+const slideInSidebar = keyframes({
+    from: {
+        transform: "translateX(-100%)"
+    },
+    to: {
+        transform: "translateX(0)"
+    }
+});
+
+const slideOutSidebar = keyframes({
+    from: {
+        transform: "translateX(0)"
+    },
+    to: {
+        transform: "translateX(-100%)"
+    }
+});
+
+const CollapsableStyle = {
+    height: "calc(100vh - 100px)",
+    display: "block",
+    position: "absolute",
+    backgroundColor: "$gray900",
+    border: "none",
+    borderRight: "1px solid $gray200",
+    borderRadius: 0,
+    fontSize: "$md",
+    zIndex: 10,
+    nav: {
+        ul: {
+            gap: 10
+        }
+    },
+    ".logout": {
+        width: "min-content",
+        margin: "4rem auto"
+    }
+};
+
 export const Aside = styled("aside", {
-    backgroundColor: "$gray800",
-    height: "calc(100vh - 124px)",
+    backgroundColor: "$gray900",
+    height: "calc(100vh - 100px)",
     width: 220,
-    border: "1px solid $gray200",
-    borderRadius: 6,
+    borderRight: "1px solid $gray200",
     padding: 6,
 
     display: "flex",
@@ -133,29 +171,18 @@ export const Aside = styled("aside", {
     "@bp1": {
         display: "none"
     },
-
     variants: {
         collapsable: {
             true: {
-                transition: "all .5",
-                height: "100vh",
-                display: "block",
-                position: "absolute",
-                backgroundColor: "$gray900",
-                border: "none",
-                borderRight: "1px solid $gray200",
-                borderRadius: 0,
-                fontSize: "$md",
-                zIndex: 10,
-                nav: {
-                    ul: {
-                        gap: 10
-                    }
-                },
-                ".logout": {
-                    width: "min-content",
-                    margin: "4rem auto",
-                },
+                ...CollapsableStyle,
+                animation: `${slideInSidebar} .3s forwards`,
+                
+            },
+            false: {
+                "@bp1": {
+                    ...CollapsableStyle,
+                    animation: `${slideOutSidebar} .3s forwards`,
+                }
             }
         }
     }
@@ -163,9 +190,8 @@ export const Aside = styled("aside", {
 
 export const Content = styled("div", {
     display: "flex",
-    margin: 12,
     section: {
-        margin: "0 auto"
+        margin: "1rem auto"
     },
 
     "@bp1": {

@@ -19,6 +19,7 @@ export const {
             // gray200: "#A9A7A7", // old border
             primary500: "#BE123C",
             primary400: "#E52151",
+            green700: "#15803d", // success
             red700: "#D94848", // error
 
             white: "#DED9D9" // primary text
