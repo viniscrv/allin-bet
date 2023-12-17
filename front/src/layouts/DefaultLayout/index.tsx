@@ -7,7 +7,8 @@ import {
     Coins,
     ArrowLeft,
     List,
-    X
+    X,
+    CurrencyEth
 } from "@phosphor-icons/react";
 import { Aside, Container, Content, Header } from "./styles";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
@@ -68,6 +69,11 @@ export function DefaultLayout() {
                     path: "/launcher/games/double-gain",
                     icon: <Coins size={18} color="#8B8B8B" />,
                     title: "Double Gain"
+                },
+                {
+                    path: "/launcher/games/mines",
+                    icon: <CurrencyEth size={18} color="#8B8B8B" />,
+                    title: "Mines"
                 }
             ]
         }
