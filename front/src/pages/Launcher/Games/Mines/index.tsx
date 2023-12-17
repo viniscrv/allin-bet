@@ -47,6 +47,14 @@ export function Mines() {
                         Começar jogo
                     </button>
                 </form>
+
+
+                <div>
+
+                    <div>
+                        ok
+                    </div>
+                </div>
             </div>
         </Container>
     );
