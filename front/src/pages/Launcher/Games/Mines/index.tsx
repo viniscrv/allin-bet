@@ -1,9 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Card, Container } from "./styles";
 import { ToastContext } from "../../../../contexts/ToastContext";
+import { api } from "../../../../lib/axios";
+import { AxiosError } from "axios";
 
 const playerOptionsFormSchema = z.object({
     value: z.number()
@@ -40,8 +42,8 @@ const BASE_CARDS = [
 type playerOptionsFormData = z.infer<typeof playerOptionsFormSchema>;
 
 export function Mines() {
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-    const [loading, setLoading] = useState(false);
+    // const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    // const [loading, setLoading] = useState(false);
 
     const { register, handleSubmit } = useForm<playerOptionsFormData>({
         resolver: zodResolver(playerOptionsFormSchema)
@@ -55,37 +57,26 @@ export function Mines() {
 
     const [remainingGems, setRemainingGems] = useState(20);
 
-    function startGame({ value }: playerOptionsFormData) {
+    async function handleGame({ value }: playerOptionsFormData) {
         if (!inGame) {
+            try {
+                // setLoading(true);
 
-            // TODO: isso vai vir do back
-            setMockCards([
-                { id: 1, value: "bomb", turned: false },
-                { id: 2, value: "diamond", turned: false },
-                { id: 3, value: "bomb", turned: false },
-                { id: 4, value: "diamond", turned: false },
-                { id: 5, value: "bomb", turned: false },
-                { id: 6, value: "diamond", turned: false },
-                { id: 7, value: "bomb", turned: false },
-                { id: 8, value: "diamond", turned: false },
-                { id: 9, value: "bomb", turned: false },
-                { id: 10, value: "diamond", turned: false },
-                { id: 11, value: "bomb", turned: false },
-                { id: 12, value: "diamond", turned: false },
-                { id: 13, value: "bomb", turned: false },
-                { id: 14, value: "diamond", turned: false },
-                { id: 15, value: "bomb", turned: false },
-                { id: 16, value: "diamond", turned: false },
-                { id: 17, value: "bomb", turned: false },
-                { id: 18, value: "diamond", turned: false },
-                { id: 19, value: "bomb", turned: false },
-                { id: 20, value: "diamond", turned: false },
-                { id: 21, value: "bomb", turned: false },
-                { id: 22, value: "diamond", turned: false },
-                { id: 23, value: "bomb", turned: false },
-                { id: 24, value: "diamond", turned: false },
-                { id: 25, value: "bomb", turned: false }
-            ]);
+                const { data } = await api.post("/mines/generate", {
+                    value: 10,
+                    minesQuantity: 5
+                });
+
+                setMockCards(data.deck);
+
+                console.log(data);
+            } catch (err) {
+                if (err instanceof AxiosError && err?.response?.data?.message) {
+                    return console.log(err.response.data.message);
+                }
+            } finally {
+                // setLoading(false);
+            }
 
             setInGame(true);
 
@@ -98,6 +89,7 @@ export function Mines() {
             color: "green"
         });
 
+        setMockCards(BASE_CARDS);
         setInGame(false);
     }
 
@@ -118,7 +110,6 @@ export function Mines() {
 
                 // lose
                 if (item.value == "bomb") {
-                    
                     losed = true;
                 } else {
                     setRemainingGems(remainingGems - 1);
@@ -148,7 +139,7 @@ export function Mines() {
             <h1>Mines</h1>
 
             <div className="game-container">
-                <form onSubmit={handleSubmit(startGame)}>
+                <form onSubmit={handleSubmit(handleGame)}>
                     <span>Quantia:</span>
                     <input
                         placeholder="R$ 0,00"
@@ -193,7 +184,7 @@ export function Mines() {
                     )}
                     <button
                         className="start-game-button"
-                        disabled={isButtonDisabled || loading}
+                        // disabled={isButtonDisabled || loading}
                     >
                         {inGame ? "Retirar 00,00" : "Começar jogo"}
                     </button>
@@ -203,7 +194,14 @@ export function Mines() {
                     {mockCards.map((card, index) => {
                         return (
                             <Card key={index} onClick={() => turnCard(card.id)}>
-                                {card.turned ? card.value : null}
+                                {/* {card.turned ? card.value : null} */}
+                                
+                                {card.value == "bomb" ? (
+                                    <span style={{border: "1px solid red"}}>{card.value}</span>
+
+                                ): (
+                                    <span>{card.value}</span>
+                                )}
                             </Card>
                         );
                     })}
