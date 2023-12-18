@@ -6,10 +6,10 @@ import { prisma } from "../../../lib/prisma";
 export async function play(req: Request, res: Response): Promise<Response> {
     const playBodySchema = z.object({
         color: z.enum(["red", "white", "black"]),
-        value: z.number()
+        amount: z.number()
     });
 
-    const { color, value } = playBodySchema.parse(req.body);
+    const { color, amount } = playBodySchema.parse(req.body);
     const id = req.userId;
 
     const user = await prisma.user.findUnique({
@@ -27,11 +27,11 @@ export async function play(req: Request, res: Response): Promise<Response> {
 
     const userBalance = Number(user.balance);
 
-    if (value <= 0) {
-        return res.status(403).json({ message: "Invalid value" });
+    if (amount <= 0) {
+        return res.status(403).json({ message: "Invalid amount" });
     }
 
-    if (value > userBalance) {
+    if (amount > userBalance) {
         return res.status(400).json({ message: "Insufficient balance" });
     }
 
@@ -58,39 +58,39 @@ export async function play(req: Request, res: Response): Promise<Response> {
     function runGame() {
         const { randomNumber, randomColor } = getColor();
         let isVictory;
-        let handleValue;
+        let handleAmount;
 
         if (color === randomColor) {
             isVictory = true;
 
             if (randomColor === "white") {
-                handleValue = value * 14;
+                handleAmount = amount * 14;
 
                 return {
                     isVictory,
-                    handleValue,
+                    handleAmount,
                     randomNumber,
                     isJackpot: true
                 };
             }
 
-            handleValue = value;
+            handleAmount = amount;
         } else {
             isVictory = false;
-            handleValue = value * -1;
+            handleAmount = amount * -1;
         }
 
-        return { isVictory, handleValue, randomNumber, isJackpot: false };
+        return { isVictory, handleAmount, randomNumber, isJackpot: false };
     }
 
-    const { isVictory, isJackpot, handleValue, randomNumber } = runGame();
+    const { isVictory, isJackpot, handleAmount, randomNumber } = runGame();
 
-    const updatedBalance = await updateUserBalance(id, handleValue);
+    const updatedBalance = await updateUserBalance(id, handleAmount);
 
     await prisma.bet.create({
         data: {
             user_id: id,
-            value,
+            value: amount,
             isVictory,
             isJackpot
         }
@@ -100,7 +100,7 @@ export async function play(req: Request, res: Response): Promise<Response> {
         return res.status(200).json({
             message: "Unfortunately you didn't win this time",
             number: randomNumber,
-            losses: handleValue,
+            losses: handleAmount,
             updatedBalance
         });
     }
@@ -108,7 +108,7 @@ export async function play(req: Request, res: Response): Promise<Response> {
     return res.status(200).json({
         message: "Congratulations, you have won",
         number: randomNumber,
-        gains: handleValue,
+        gains: handleAmount,
         updatedBalance
     });
 }

@@ -5,11 +5,11 @@ import { prisma } from "../../../lib/prisma";
 
 export async function generateDeck(req: Request, res: Response): Promise<Response> {
     const playBodySchema = z.object({
-        value: z.number(),
+        amount: z.number(),
         minesQuantity: z.number(), // TODO: validar
     });
 
-    const { value, minesQuantity } = playBodySchema.parse(req.body);
+    const { amount, minesQuantity } = playBodySchema.parse(req.body);
     const id = req.userId;
 
     const user = await prisma.user.findUnique({
@@ -27,20 +27,22 @@ export async function generateDeck(req: Request, res: Response): Promise<Respons
 
     const userBalance = Number(user.balance);
 
-    if (value <= 0) {
-        return res.status(403).json({ message: "Invalid value" });
+    if (amount <= 0) {
+        return res.status(403).json({ message: "Invalid amount" });
     }
 
-    if (value > userBalance) {
+    if (amount > userBalance) {
         return res.status(400).json({ message: "Insufficient balance" });
     }
+
+    await updateUserBalance(id, amount * -1);
 
     let deck = [];
 
     for (let i = 0; i < 25; i++) {
         deck.push({
             id: i,
-            value: "diamond",
+            amount: "diamond",
             turned: "false"
         });
     }
@@ -52,7 +54,7 @@ export async function generateDeck(req: Request, res: Response): Promise<Respons
 
         
         if (!drawnedNumbers.includes(drawned)) {
-            deck[drawned].value = "bomb";
+            deck[drawned].amount = "bomb";
             
             drawnedNumbers.push(drawned);
         } else {
