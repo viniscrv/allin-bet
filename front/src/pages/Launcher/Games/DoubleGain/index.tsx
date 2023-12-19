@@ -34,7 +34,7 @@ export function DoubleGain() {
     async function sendGameOptions(value: number, color: string) {
         try {
             const { data } = await api.post("/doublegain", {
-                value,
+                amount: value,
                 color
             });
 

@@ -1,4 +1,3 @@
-import * as RadioGroup from "@radix-ui/react-radio-group";
 import { styled } from "../../../../../stitches.config";
 
 export const Container = styled("div", {
@@ -15,11 +14,12 @@ export const Container = styled("div", {
         form: {
             paddingRight: ".5rem",
             borderRight: "1px solid $gray200",
+            maxWidth: "255px",
             span: {
                 display: "flex",
                 alignItems: "center",
                 color: "$gray300",
-                gap: 8
+                gap: 8,
             },
             input: {
                 width: "100%",
@@ -34,12 +34,30 @@ export const Container = styled("div", {
                     fontSize: "$sm"
                 }
             },
-            ".color-select-fields": {
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)"
+            select: {
+                width: "100%",
+                margin: ".5rem 0",
+                backgroundColor: "transparent",
+                border: "1px solid $gray200",
+                borderRadius: 6,
+                padding: "12px",
+                fontSize: "$sm",
+
+                "&::placeholder": {
+                    fontSize: "$sm"
+                }
+            },
+            ".game-informations": {
+                ".game-informations-sm": {
+                    display: "flex",
+                    gap: 12,
+                    div: {
+                        width: "50%"
+                    }
+                }
             },
             ".start-game-button": {
-                width: "max-content",
+                width: "100%",
                 backgroundColor: "$primary500",
                 border: "none",
                 borderRadius: 6,
@@ -56,6 +74,15 @@ export const Container = styled("div", {
                     opacity: "0.5"
                 }
             }
+        },
+
+        ".grid-cards": {
+            flex: 1,
+            marginLeft: "18px",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+            gap: "1rem",
+            userSelect: "none"
         }
     },
 
@@ -77,5 +104,21 @@ export const Container = styled("div", {
                 }
             }
         }
+    }
+});
+
+
+export const Card = styled("div", {
+    height: "120px",
+    backgroundColor: "#2d3035",
+    borderRadius: "4px",
+    cursor: "pointer",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+
+    "&:hover": {
+        backgroundColor: "#36393d"
     }
 });
