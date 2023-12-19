@@ -1,17 +1,24 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Card, Container } from "./styles";
 import { ToastContext } from "../../../../contexts/ToastContext";
 import { api } from "../../../../lib/axios";
 import { AxiosError } from "axios";
+import { UserContext } from "../../../../contexts/UserContext";
 
 const playerOptionsFormSchema = z.object({
     value: z.number()
 });
 
-const BASE_CARDS = [
+interface Card {
+    id: Number;
+    value: String;
+    turned: Boolean;
+}
+
+const BASE_CARDS: Card[] = [
     { id: 1, value: "", turned: false },
     { id: 2, value: "", turned: false },
     { id: 3, value: "", turned: false },
@@ -43,39 +50,51 @@ type playerOptionsFormData = z.infer<typeof playerOptionsFormSchema>;
 
 export function Mines() {
     // const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-    // const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+   
 
     const { register, handleSubmit } = useForm<playerOptionsFormData>({
         resolver: zodResolver(playerOptionsFormSchema)
     });
 
+    const { refreshUserData } = useContext(UserContext);
     const { shootToast } = useContext(ToastContext);
 
     const [inGame, setInGame] = useState(false);
-
-    const [mockCards, setMockCards] = useState(BASE_CARDS);
-
+    const [cards, setCards] = useState<Card[]>([]);
     const [remainingGems, setRemainingGems] = useState(20);
+    const [turnedCards, setTurnedCards] = useState<Number[]>([]);
+    const [amount, setAmount] = useState<Number>();
+
+    useEffect(() => {
+        setCards(BASE_CARDS);
+    },[])
 
     async function handleGame({ value }: playerOptionsFormData) {
+        setAmount(value);
+
         if (!inGame) {
             try {
-                // setLoading(true);
+                setLoading(true);
 
                 const { data } = await api.post("/mines/generate", {
-                    value: 10,
-                    minesQuantity: 5
+                    amount: value,
+                    minesQuantity: 5,
                 });
+                // refreshUserData();
+                console.log("data", data.deck);
+                setCards(data.deck);
 
-                setMockCards(data.deck);
+                console.log("cards", cards);
 
-                console.log(data);
+                setRemainingGems(20);
             } catch (err) {
                 if (err instanceof AxiosError && err?.response?.data?.message) {
                     return console.log(err.response.data.message);
                 }
             } finally {
-                // setLoading(false);
+                setLoading(false);
             }
 
             setInGame(true);
@@ -83,13 +102,31 @@ export function Mines() {
             return;
         }
 
+        // finalizou antes de perder/jackpot
         shootToast({
             title: "Encerrado com sucesso",
             description: `${value} adicionado à sua carteira`,
             color: "green"
         });
 
-        setMockCards(BASE_CARDS);
+        // setCards(BASE_CARDS);
+        setInGame(false);
+    }
+
+    function jackpot() {
+        // TODO: jackpot logica
+        shootToast({
+            title: "jackpot",
+            description: "...",
+            color: "green"
+        });
+
+        // refreshUserData();
+
+        // reset game
+        // setCards(BASE_CARDS);
+        setTurnedCards([]);
+        setRemainingGems(20);
         setInGame(false);
     }
 
@@ -104,15 +141,24 @@ export function Mines() {
 
         let losed = false;
 
-        let newMockCards = mockCards.map((item) => {
-            if (item.id == id) {
+        let newMockCards = cards.map((item) => {
+            const cardId = item.id;
+
+            if (cardId == id) {
                 item.turned = true;
 
                 // lose
                 if (item.value == "bomb") {
                     losed = true;
                 } else {
-                    setRemainingGems(remainingGems - 1);
+                    if (!turnedCards.includes(cardId)) {
+                        setTurnedCards([...turnedCards, cardId]);
+                        setRemainingGems(remainingGems - 1);
+
+                        if (remainingGems == 1) {
+                            jackpot();
+                        }
+                    }
                 }
             }
 
@@ -120,23 +166,53 @@ export function Mines() {
         });
 
         if (losed) {
+            sendResult();
+
             shootToast({
                 title: "Não foi dessa vez",
                 description: "Infelizmente você perdeu desta vez",
                 color: "red"
             });
-            setMockCards(BASE_CARDS);
+            
+            // reset game
+            // setCards(BASE_CARDS);
             setInGame(false);
 
             return;
         }
 
-        setMockCards(newMockCards);
+        setCards(newMockCards);
+    }
+
+    async function sendResult() {
+        try {
+            setLoading(true);
+
+            const { data } = await api.post("/mines/result", {
+                remainingGems,
+                minesQuantity: 5,
+                multiplier: 2, // TODO: alterar
+                amount
+            });
+
+            refreshUserData();
+
+            console.log("result", data);
+
+            // TODO: reset game
+        } catch (err) {
+            if (err instanceof AxiosError && err?.response?.data?.message) {
+                return console.log(err.response.data.message);
+            }
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
         <Container>
-            <h1>Mines</h1>
+            <h1>Mines </h1>
+            <span>ingame {inGame ? "true" : "false"}</span>
 
             <div className="game-container">
                 <form onSubmit={handleSubmit(handleGame)}>
@@ -184,22 +260,23 @@ export function Mines() {
                     )}
                     <button
                         className="start-game-button"
-                        // disabled={isButtonDisabled || loading}
+                        disabled={loading}
                     >
                         {inGame ? "Retirar 00,00" : "Começar jogo"}
                     </button>
                 </form>
 
                 <div className="grid-cards">
-                    {mockCards.map((card, index) => {
+                    {cards.map((card, index) => {
                         return (
                             <Card key={index} onClick={() => turnCard(card.id)}>
                                 {/* {card.turned ? card.value : null} */}
-                                
-                                {card.value == "bomb" ? (
-                                    <span style={{border: "1px solid red"}}>{card.value}</span>
 
-                                ): (
+                                {card.value == "bomb" ? (
+                                    <span style={{ border: "1px solid red" }}>
+                                        {card.value}
+                                    </span>
+                                ) : (
                                     <span>{card.value}</span>
                                 )}
                             </Card>
