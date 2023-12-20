@@ -66,7 +66,7 @@ export function Mines() {
 
     const [multiplier, setMultiplier] = useState<number>(2);
     const [nextMultiplier, setNextMultiplier] = useState<number>(2.5);
-    const [remainingMines, setRemainingMines] = useState(5); 
+    const [minesQuantity, setMinesQuantity] = useState(5); 
     const [remainingGems, setRemainingGems] = useState(20);
     const [turnedCards, setTurnedCards] = useState<number[]>([]);
     const [amount, setAmount] = useState<number>(0);
@@ -81,11 +81,28 @@ export function Mines() {
 
                 const { data } = await api.post("/mines/generate", {
                     amount: value,
-                    minesQuantity: 5,
+                    minesQuantity,
                 });
                 
                 refreshUserData();
+                setTurnedCards([]);
                 setCards(data.deck);
+
+                switch(minesQuantity) {
+                    case 5:
+                        setMultiplier(2);
+                        setNextMultiplier(2.5);
+                        break;
+                    case 10:
+                        setMultiplier(2);
+                        setNextMultiplier(3);
+                        break;
+                    case 15:
+                        setMultiplier(2);
+                        setNextMultiplier(3.5);
+                        break;
+                    default: break;
+                }
 
                 setRemainingGems(20);
             } catch (err) {
@@ -101,7 +118,7 @@ export function Mines() {
         // finalizou antes de perder/jackpot
         shootToast({
             title: "Encerrado com sucesso",
-            description: `${value} adicionado à sua carteira`,
+            description: `${priceFormatter.format(amount*multiplier)} adicionado à sua carteira`,
             color: "green"
         });
 
@@ -117,13 +134,13 @@ export function Mines() {
             color: "green"
         });
 
-        // refreshUserData();
+        refreshUserData();
 
         // reset game
         setCards(BASE_CARDS);
         setTurnedCards([]);
         setMultiplier(2);
-        setMultiplier(2.5);
+        setNextMultiplier(2.5);
         setRemainingGems(20);
         setInGame(false);
     }
@@ -153,7 +170,7 @@ export function Mines() {
                         setTurnedCards([...turnedCards, cardId]);
                         setRemainingGems(remainingGems - 1);
 
-                        switch(remainingMines) {
+                        switch(minesQuantity) {
                             case 5:
                                 setMultiplier(state => state + 0.5);
                                 setNextMultiplier(state => state + 0.5);
@@ -190,8 +207,7 @@ export function Mines() {
             
             // reset game
             setCards(BASE_CARDS);
-            setMultiplier(2);
-            setMultiplier(2.5);
+            setTurnedCards([]);
             setInGame(false);
 
             return;
@@ -206,17 +222,15 @@ export function Mines() {
 
             const { data } = await api.post("/mines/result", {
                 remainingGems,
-                minesQuantity: 5,
-                multiplier, // TODO: alterar
+                minesQuantity,
+                multiplier,
                 amount
             });
 
             refreshUserData();
+            setTurnedCards([]);
 
             console.log("result", data);
-
-            setMultiplier(2);
-            setMultiplier(2.5);
 
             // TODO: reset game
         } catch (err) {
@@ -269,8 +283,8 @@ export function Mines() {
                         </div>
                     ) : (
                         <div>
-                            <span>Número de minas:</span>
-                            <select placeholder="Selecione">
+                            <span>Número de minas: {minesQuantity}</span>
+                            <select placeholder="Selecione" value={minesQuantity.toString()} onChange={(e) => setMinesQuantity(Number(e.target.value))}>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="15">15</option>
@@ -279,7 +293,7 @@ export function Mines() {
                     )}
                     <button
                         className="start-game-button"
-                        disabled={loading}
+                        disabled={loading || inGame && turnedCards.length == 0}
                     >
                         {inGame ? `Retirar ${priceFormatter.format(amount*multiplier)}` : "Começar jogo"}
                     </button>
