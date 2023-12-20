@@ -7,13 +7,14 @@ import { ToastContext } from "../../../../contexts/ToastContext";
 import { api } from "../../../../lib/axios";
 import { AxiosError } from "axios";
 import { UserContext } from "../../../../contexts/UserContext";
+import { priceFormatter } from "../../../../utils/formatter";
 
 const playerOptionsFormSchema = z.object({
     value: z.number()
 });
 
 interface Card {
-    id: Number;
+    id: number;
     value: String;
     turned: Boolean;
 }
@@ -62,15 +63,19 @@ export function Mines() {
     const [inGame, setInGame] = useState(false);
     const [cards, setCards] = useState<Card[]>(BASE_CARDS);
 
+
+    const [multiplier, setMultiplier] = useState<number>(2);
+    const [nextMultiplier, setNextMultiplier] = useState<number>(2.5);
+    const [remainingMines, setRemainingMines] = useState(5); 
     const [remainingGems, setRemainingGems] = useState(20);
-    const [turnedCards, setTurnedCards] = useState<Number[]>([]);
-    const [amount, setAmount] = useState<Number>();
+    const [turnedCards, setTurnedCards] = useState<number[]>([]);
+    const [amount, setAmount] = useState<number>(0);
 
     async function handleGame({ value }: playerOptionsFormData) {
         setAmount(value);
         
         if (!inGame) {
-            console.log("!inGame");
+            setInGame(true);
             try {
                 setLoading(true);
 
@@ -90,8 +95,6 @@ export function Mines() {
             } finally {
                 setLoading(false);
             }
-
-            setInGame(true);
             return;
         }
 
@@ -119,11 +122,13 @@ export function Mines() {
         // reset game
         setCards(BASE_CARDS);
         setTurnedCards([]);
+        setMultiplier(2);
+        setMultiplier(2.5);
         setRemainingGems(20);
         setInGame(false);
     }
 
-    function turnCard(id: Number) {
+    function turnCard(id: number) {
         if (!inGame) {
             shootToast({
                 title: "Erro",
@@ -148,6 +153,22 @@ export function Mines() {
                         setTurnedCards([...turnedCards, cardId]);
                         setRemainingGems(remainingGems - 1);
 
+                        switch(remainingMines) {
+                            case 5:
+                                setMultiplier(state => state + 0.5);
+                                setNextMultiplier(state => state + 0.5);
+                                break;
+                            case 10:
+                                setMultiplier(state => state + 1);
+                                setNextMultiplier(state => state + 1);
+                                break;
+                            case 15:
+                                setMultiplier(state => state + 1.5);
+                                setNextMultiplier(state => state + 1.5);
+                                break;
+                            default: break;
+                        }
+
                         if (remainingGems == 1) {
                             jackpot();
                         }
@@ -169,6 +190,8 @@ export function Mines() {
             
             // reset game
             setCards(BASE_CARDS);
+            setMultiplier(2);
+            setMultiplier(2.5);
             setInGame(false);
 
             return;
@@ -184,13 +207,16 @@ export function Mines() {
             const { data } = await api.post("/mines/result", {
                 remainingGems,
                 minesQuantity: 5,
-                multiplier: 2, // TODO: alterar
+                multiplier, // TODO: alterar
                 amount
             });
 
             refreshUserData();
 
             console.log("result", data);
+
+            setMultiplier(2);
+            setMultiplier(2.5);
 
             // TODO: reset game
         } catch (err) {
@@ -221,10 +247,10 @@ export function Mines() {
                     {inGame ? (
                         <div className="game-informations">
                             <span>Multiplicador atual</span>
-                            <input type="text" value="2x" readOnly />
+                            <input type="text" value={`${multiplier}x`} readOnly />
 
                             <span>Próximo multiplicador</span>
-                            <input type="text" value="2.5x" readOnly />
+                            <input type="text" value={`${nextMultiplier}x`} readOnly />
 
                             <div className="game-informations-sm">
                                 <div>
@@ -255,7 +281,7 @@ export function Mines() {
                         className="start-game-button"
                         disabled={loading}
                     >
-                        {inGame ? "Retirar 00,00" : "Começar jogo"}
+                        {inGame ? `Retirar ${priceFormatter.format(amount*multiplier)}` : "Começar jogo"}
                     </button>
                 </form>
 
