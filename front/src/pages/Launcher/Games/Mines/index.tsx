@@ -52,8 +52,6 @@ export function Mines() {
     // const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [loading, setLoading] = useState(false);
 
-   
-
     const { register, handleSubmit } = useForm<playerOptionsFormData>({
         resolver: zodResolver(playerOptionsFormSchema)
     });
@@ -62,19 +60,17 @@ export function Mines() {
     const { shootToast } = useContext(ToastContext);
 
     const [inGame, setInGame] = useState(false);
-    const [cards, setCards] = useState<Card[]>([]);
+    const [cards, setCards] = useState<Card[]>(BASE_CARDS);
+
     const [remainingGems, setRemainingGems] = useState(20);
     const [turnedCards, setTurnedCards] = useState<Number[]>([]);
     const [amount, setAmount] = useState<Number>();
 
-    useEffect(() => {
-        setCards(BASE_CARDS);
-    },[])
-
     async function handleGame({ value }: playerOptionsFormData) {
         setAmount(value);
-
+        
         if (!inGame) {
+            console.log("!inGame");
             try {
                 setLoading(true);
 
@@ -82,11 +78,9 @@ export function Mines() {
                     amount: value,
                     minesQuantity: 5,
                 });
-                // refreshUserData();
-                console.log("data", data.deck);
+                
+                refreshUserData();
                 setCards(data.deck);
-
-                console.log("cards", cards);
 
                 setRemainingGems(20);
             } catch (err) {
@@ -98,7 +92,6 @@ export function Mines() {
             }
 
             setInGame(true);
-
             return;
         }
 
@@ -109,7 +102,7 @@ export function Mines() {
             color: "green"
         });
 
-        // setCards(BASE_CARDS);
+        setCards(BASE_CARDS);
         setInGame(false);
     }
 
@@ -124,7 +117,7 @@ export function Mines() {
         // refreshUserData();
 
         // reset game
-        // setCards(BASE_CARDS);
+        setCards(BASE_CARDS);
         setTurnedCards([]);
         setRemainingGems(20);
         setInGame(false);
@@ -175,7 +168,7 @@ export function Mines() {
             });
             
             // reset game
-            // setCards(BASE_CARDS);
+            setCards(BASE_CARDS);
             setInGame(false);
 
             return;
@@ -267,7 +260,7 @@ export function Mines() {
                 </form>
 
                 <div className="grid-cards">
-                    {cards.map((card, index) => {
+                    {cards?.map((card, index) => {
                         return (
                             <Card key={index} onClick={() => turnCard(card.id)}>
                                 {/* {card.turned ? card.value : null} */}
@@ -280,6 +273,7 @@ export function Mines() {
                                     <span>{card.value}</span>
                                 )}
                             </Card>
+
                         );
                     })}
                 </div>

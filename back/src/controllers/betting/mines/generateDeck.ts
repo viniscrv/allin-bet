@@ -42,7 +42,7 @@ export async function generateDeck(req: Request, res: Response): Promise<Respons
     for (let i = 0; i < 25; i++) {
         deck.push({
             id: i,
-            amount: "diamond",
+            value: "diamond",
             turned: "false"
         });
     }
@@ -54,7 +54,7 @@ export async function generateDeck(req: Request, res: Response): Promise<Respons
 
         
         if (!drawnedNumbers.includes(drawned)) {
-            deck[drawned].amount = "bomb";
+            deck[drawned].value = "bomb";
             
             drawnedNumbers.push(drawned);
         } else {
