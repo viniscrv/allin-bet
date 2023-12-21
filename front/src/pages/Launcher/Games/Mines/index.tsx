@@ -104,7 +104,7 @@ export function Mines() {
                     default: break;
                 }
 
-                setRemainingGems(20);
+                setRemainingGems(25 - minesQuantity);
             } catch (err) {
                 if (err instanceof AxiosError && err?.response?.data?.message) {
                     return console.log(err.response.data.message);
@@ -123,31 +123,6 @@ export function Mines() {
         });
 
         sendResult();
-
-        setCards(BASE_CARDS);
-        setInGame(false);
-    }
-
-
-    function jackpot() {
-        console.log("jackpot");
-        // TODO: jackpot logica
-        shootToast({
-            title: "jackpot",
-            description: "...",
-            color: "green"
-        });
-
-        refreshUserData();
-
-        // reset game
-        setCards(BASE_CARDS);
-        setTurnedCards([]);
-        setMultiplier(1);
-        setNextMultiplier(1.5);
-        setRemainingGems(20);
-        setMinesQuantity(5);
-        setInGame(false);
     }
 
     function turnCard(id: number) {
@@ -168,17 +143,7 @@ export function Mines() {
                 item.turned = true;
 
                 // lose
-                if (item.value == "bomb") {
-                    shootToast({
-                        title: "Não foi dessa vez",
-                        description: "Infelizmente você perdeu desta vez",
-                        color: "red"
-                    });
-
-                    losed = true;
-                    sendResult(losed);
-
-                } else {
+                if (item.value == "diamond") {
                     if (!turnedCards.includes(cardId)) {
                         setTurnedCards([...turnedCards, cardId]);
                         setRemainingGems(remainingGems - 1);
@@ -203,6 +168,15 @@ export function Mines() {
                             jackpot();
                         }
                     }
+                } else {
+                    shootToast({
+                        title: "Não foi dessa vez",
+                        description: "Infelizmente você perdeu desta vez",
+                        color: "red"
+                    });
+
+                    losed = true;
+                    sendResult({losed, jackpot: false});
                 }
             }
 
@@ -214,26 +188,54 @@ export function Mines() {
         return;
     }
 
-    async function sendResult(losed=false) {
+    function jackpot() {
+        // TODO: não está enviando o ultimo multiplicador
+        shootToast({
+            title: "JACKPOT",
+            description: `${priceFormatter.format(amount*multiplier)} adicionado à sua carteira`,
+            color: "green"
+        });
+
+        let params = {
+            losed: false,
+            jackpot: true,
+        }
+
+        sendResult(params);
+    }
+
+    function resetGame() {
+
+        setCards(BASE_CARDS);
+        setTurnedCards([]);
+        setMultiplier(1);
+        setNextMultiplier(1.5);
+        setRemainingGems(20);
+        setMinesQuantity(5);
+        setInGame(false);
+    }
+
+    interface ResultParams {
+        losed?: boolean;
+        jackpot?: boolean;
+    }
+
+    async function sendResult(params: ResultParams = {}) {
+        const { losed=false, jackpot=false } = params;
+
         try {
             setLoading(true);
 
-            const { data } = await api.post("/mines/result", {
+            await api.post("/mines/result", {
                 remainingGems,
-                minesQuantity: losed ? 4 : 5,
-                multiplier,
+                minesQuantity: losed ? 4 : 5, //gambi
+                multiplier: jackpot ? nextMultiplier : multiplier, //gambi
                 amount
             });
 
             refreshUserData();
-            setTurnedCards([]);
-            setCards(BASE_CARDS);
-            // setMinesQuantity(5);
-            setInGame(false);
+            resetGame();
 
-            console.log("result", data);
-
-            // TODO: reset game
         } catch (err) {
             if (err instanceof AxiosError && err?.response?.data?.message) {
                 return console.log(err.response.data.message);
