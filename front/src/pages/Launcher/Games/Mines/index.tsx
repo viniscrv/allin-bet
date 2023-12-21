@@ -64,10 +64,10 @@ export function Mines() {
     const [cards, setCards] = useState<Card[]>(BASE_CARDS);
 
 
-    const [multiplier, setMultiplier] = useState<number>(2);
+    const [multiplier, setMultiplier] = useState<number>(1);
     const [nextMultiplier, setNextMultiplier] = useState<number>(2.5);
-    const [minesQuantity, setMinesQuantity] = useState(5); 
-    const [remainingGems, setRemainingGems] = useState(20);
+    const [minesQuantity, setMinesQuantity] = useState<number>(5); 
+    const [remainingGems, setRemainingGems] = useState<number>(20);
     const [turnedCards, setTurnedCards] = useState<number[]>([]);
     const [amount, setAmount] = useState<number>(0);
 
@@ -90,16 +90,16 @@ export function Mines() {
 
                 switch(minesQuantity) {
                     case 5:
-                        setMultiplier(2);
-                        setNextMultiplier(2.5);
+                        setMultiplier(1);
+                        setNextMultiplier(1.5);
                         break;
                     case 10:
-                        setMultiplier(2);
-                        setNextMultiplier(3);
+                        setMultiplier(1);
+                        setNextMultiplier(2);
                         break;
                     case 15:
-                        setMultiplier(2);
-                        setNextMultiplier(3.5);
+                        setMultiplier(1);
+                        setNextMultiplier(2.5);
                         break;
                     default: break;
                 }
@@ -122,11 +122,15 @@ export function Mines() {
             color: "green"
         });
 
+        sendResult();
+
         setCards(BASE_CARDS);
         setInGame(false);
     }
 
+
     function jackpot() {
+        console.log("jackpot");
         // TODO: jackpot logica
         shootToast({
             title: "jackpot",
@@ -139,9 +143,10 @@ export function Mines() {
         // reset game
         setCards(BASE_CARDS);
         setTurnedCards([]);
-        setMultiplier(2);
-        setNextMultiplier(2.5);
+        setMultiplier(1);
+        setNextMultiplier(1.5);
         setRemainingGems(20);
+        setMinesQuantity(5);
         setInGame(false);
     }
 
@@ -164,7 +169,15 @@ export function Mines() {
 
                 // lose
                 if (item.value == "bomb") {
+                    shootToast({
+                        title: "Não foi dessa vez",
+                        description: "Infelizmente você perdeu desta vez",
+                        color: "red"
+                    });
+
                     losed = true;
+                    sendResult(losed);
+
                 } else {
                     if (!turnedCards.includes(cardId)) {
                         setTurnedCards([...turnedCards, cardId]);
@@ -196,39 +209,27 @@ export function Mines() {
             return item;
         });
 
-        if (losed) {
-            sendResult();
-
-            shootToast({
-                title: "Não foi dessa vez",
-                description: "Infelizmente você perdeu desta vez",
-                color: "red"
-            });
-            
-            // reset game
-            setCards(BASE_CARDS);
-            setTurnedCards([]);
-            setInGame(false);
-
-            return;
-        }
-
         setCards(newMockCards);
+
+        return;
     }
 
-    async function sendResult() {
+    async function sendResult(losed=false) {
         try {
             setLoading(true);
 
             const { data } = await api.post("/mines/result", {
                 remainingGems,
-                minesQuantity,
+                minesQuantity: losed ? 4 : 5,
                 multiplier,
                 amount
             });
 
             refreshUserData();
             setTurnedCards([]);
+            setCards(BASE_CARDS);
+            // setMinesQuantity(5);
+            setInGame(false);
 
             console.log("result", data);
 
@@ -245,7 +246,8 @@ export function Mines() {
     return (
         <Container>
             <h1>Mines </h1>
-            <span>ingame {inGame ? "true" : "false"}</span>
+            <p>ingame {inGame ? "true" : "false"}</p>
+            <p>minesQuantity {minesQuantity}</p>
 
             <div className="game-container">
                 <form onSubmit={handleSubmit(handleGame)}>
@@ -283,7 +285,7 @@ export function Mines() {
                         </div>
                     ) : (
                         <div>
-                            <span>Número de minas: {minesQuantity}</span>
+                            <span>Número de minas:</span>
                             <select placeholder="Selecione" value={minesQuantity.toString()} onChange={(e) => setMinesQuantity(Number(e.target.value))}>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
