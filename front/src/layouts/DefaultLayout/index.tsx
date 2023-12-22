@@ -8,7 +8,7 @@ import {
     ArrowLeft,
     List,
     X,
-    CurrencyEth
+    SketchLogo
 } from "@phosphor-icons/react";
 import { Aside, Container, Content, Header } from "./styles";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
@@ -72,7 +72,7 @@ export function DefaultLayout() {
                 },
                 {
                     path: "/launcher/games/mines",
-                    icon: <CurrencyEth size={18} color="#8B8B8B" />,
+                    icon: <SketchLogo size={18} color="#8B8B8B" />,
                     title: "Mines"
                 }
             ]

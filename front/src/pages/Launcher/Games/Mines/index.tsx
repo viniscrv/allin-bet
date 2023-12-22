@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Card, Container } from "./styles";
@@ -8,6 +8,7 @@ import { api } from "../../../../lib/axios";
 import { AxiosError } from "axios";
 import { UserContext } from "../../../../contexts/UserContext";
 import { priceFormatter } from "../../../../utils/formatter";
+import { SketchLogo, SmileyXEyes } from "@phosphor-icons/react";
 
 const playerOptionsFormSchema = z.object({
     value: z.number()
@@ -62,7 +63,6 @@ export function Mines() {
 
     const [inGame, setInGame] = useState(false);
     const [cards, setCards] = useState<Card[]>(BASE_CARDS);
-
 
     const [multiplier, setMultiplier] = useState<number>(1);
     const [nextMultiplier, setNextMultiplier] = useState<number>(2.5);
@@ -132,6 +132,12 @@ export function Mines() {
                 description: "Você não iniciou o jogo",
                 color: "red"
             });
+
+            return;
+        }
+
+        if (loading) {
+            return;
         }
 
         let losed = false;
@@ -174,6 +180,8 @@ export function Mines() {
                         description: "Infelizmente você perdeu desta vez",
                         color: "red"
                     });
+
+                    setMinesQuantity(state => state - 1);
 
                     losed = true;
                     sendResult({losed, jackpot: false});
@@ -234,6 +242,11 @@ export function Mines() {
             });
 
             refreshUserData();
+
+            if (losed) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+
             resetGame();
 
         } catch (err) {
@@ -273,7 +286,7 @@ export function Mines() {
                             <div className="game-informations-sm">
                                 <div>
                                     <span>Minas</span>
-                                    <input type="text" value="5" readOnly />
+                                    <input type="text" value={minesQuantity.toString()} readOnly />
                                 </div>
                                 <div>
                                     <span>Gemas</span>
@@ -304,20 +317,17 @@ export function Mines() {
                 </form>
 
                 <div className="grid-cards">
-                    {cards?.map((card, index) => {
+                    {cards?.map((card: Card, index) => {
                         return (
                             <Card key={index} onClick={() => turnCard(card.id)}>
-                                {/* {card.turned ? card.value : null} */}
-
-                                {card.value == "bomb" ? (
-                                    <span style={{ border: "1px solid red" }}>
-                                        {card.value}
-                                    </span>
-                                ) : (
-                                    <span>{card.value}</span>
-                                )}
+                                {card.turned ? (
+                                    card.value == "diamond" ? (
+                                        <SketchLogo size={42} weight="thin" color="#E52151"/>
+                                        ) : (
+                                        <SmileyXEyes size={42} weight="duotone" color="#E52151"/>
+                                    )
+                                ) : null}
                             </Card>
-
                         );
                     })}
                 </div>

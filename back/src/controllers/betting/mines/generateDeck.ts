@@ -43,7 +43,7 @@ export async function generateDeck(req: Request, res: Response): Promise<Respons
         deck.push({
             id: i,
             value: "diamond",
-            turned: "false"
+            turned: false
         });
     }
 
