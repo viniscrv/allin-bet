@@ -119,8 +119,8 @@ export const Aside = styled("aside", {
             display: "flex",
             flexDirection: "column",
             borderTop: "1px solid $gray200",
-            paddingTop: 14,
-            marginTop: 14,
+            paddingTop: 8,
+            marginTop: 8,
             gap: 6,
 
             a: {

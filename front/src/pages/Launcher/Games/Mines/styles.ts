@@ -80,7 +80,7 @@ export const Container = styled("div", {
             flex: 1,
             marginLeft: "18px",
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+            gridTemplateColumns: "repeat(5, 1fr)",
             gap: "1rem",
             userSelect: "none"
         }
@@ -92,16 +92,32 @@ export const Container = styled("div", {
             margin: "1rem 0"
         },
         ".game-container": {
-            width: "100%",
             maxWidth: "90vw",
             flexDirection: "column",
             form: {
                 border: 0,
+                width: "100%",
+                maxWidth: "100%",
+
                 ".start-game-button": {
-                    width: "100%",
                     margin: "1rem 0",
                     flex: 1
                 }
+            },
+            ".grid-cards": {
+                flex: 1,
+                marginLeft: 0,
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "1rem",
+                userSelect: "none"
+            }
+        },
+    },
+    "@bp2": {
+        ".game-container": {
+            ".grid-cards": {
+                gridTemplateColumns: "repeat(2, 1fr)",
             }
         }
     }
@@ -120,5 +136,5 @@ export const Card = styled("div", {
 
     "&:hover": {
         backgroundColor: "#36393d"
-    }
+    },
 });

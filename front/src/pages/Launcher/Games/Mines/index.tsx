@@ -261,8 +261,6 @@ export function Mines() {
     return (
         <Container>
             <h1>Mines </h1>
-            <p>ingame {inGame ? "true" : "false"}</p>
-            <p>minesQuantity {minesQuantity}</p>
 
             <div className="game-container">
                 <form onSubmit={handleSubmit(handleGame)}>
