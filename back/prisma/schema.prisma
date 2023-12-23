@@ -13,7 +13,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url = "file:./dev.db"
+  url      = "file:./dev.db"
 }
 
 // enum Result {
@@ -37,10 +37,11 @@ model User {
 model Bet {
   id         String   @id @default(uuid())
   value      Decimal
-  isVictory  Boolean
-  isJackpot  Boolean
+  is_victory Boolean
+  is_jackpot Boolean
   created_at DateTime @default(now())
   user       User     @relation(fields: [user_id], references: [id])
+  game_name  String
   user_id    String
 
   @@map("bets")

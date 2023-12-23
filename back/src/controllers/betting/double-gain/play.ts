@@ -90,9 +90,10 @@ export async function play(req: Request, res: Response): Promise<Response> {
     await prisma.bet.create({
         data: {
             user_id: id,
+            game_name: "Double Gain",
             value: amount,
-            isVictory,
-            isJackpot
+            is_victory: isVictory,
+            is_jackpot: isJackpot
         }
     });
 

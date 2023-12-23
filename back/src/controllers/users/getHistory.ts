@@ -17,7 +17,9 @@ export async function getHistory(
                     created_at: "desc"
                 },
                 select: {
-                    isVictory: true,
+                    game_name: true,
+                    is_victory: true,
+                    is_jackpot: true,
                     value: true,
                     created_at: true,
                 },

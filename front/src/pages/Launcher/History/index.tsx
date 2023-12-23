@@ -3,7 +3,8 @@ import {
     CalendarBlank,
     Coins,
     GameController,
-    Money
+    Money,
+    SketchLogo
 } from "@phosphor-icons/react";
 import { Container, HistoryList } from "./styles";
 import { useEffect, useState } from "react";
@@ -16,7 +17,8 @@ export function History() {
     interface dataType {
         Bet: {
             created_at: Date;
-            isVictory: boolean;
+            game_name: string;
+            is_victory: boolean;
             value: string;
         }[];
     }
@@ -28,6 +30,9 @@ export function History() {
         setLoadingHistory(true);
         const fetchData = async () => {
             const response = await api.get("/history");
+
+            console.log("response.data", response.data);
+
             setData(response.data.userBets);
             setLoadingHistory(false);
         };
@@ -39,6 +44,11 @@ export function History() {
         const createdAt = dayjs(date).format("D/M/YYYY");
 
         return createdAt;
+    }
+
+    const gameIcons: any = {
+        "double gain": <Coins size={18}color="#8B8B8B"/>,
+        "mines": <SketchLogo size={18}color="#8B8B8B"/>,
     }
 
     return (
@@ -99,11 +109,8 @@ export function History() {
                                     <tr key={index}>
                                         <td>
                                             <span>
-                                                <Coins
-                                                    size={18}
-                                                    color="#8B8B8B"
-                                                />
-                                                Double gain
+                                                {gameIcons[bet.game_name.toLowerCase()]}
+                                                {bet.game_name}
                                             </span>
                                         </td>
                                         <td>
@@ -111,12 +118,12 @@ export function History() {
                                                 Number(bet.value)
                                             )}
                                         </td>
-                                        {bet.isVictory && (
+                                        {bet.is_victory && (
                                             <td style={{ color: "#358e43" }}>
                                                 Vitória
                                             </td>
                                         )}
-                                        {!bet.isVictory && (
+                                        {!bet.is_victory && (
                                             <td style={{ color: "#D94848" }}>
                                                 Derrota
                                             </td>

@@ -14,8 +14,9 @@ export async function getMetrics(
         select: {
             Bet: {
                 select: {
-                    isVictory: true,
-                    isJackpot: true,
+                    game_name: true,
+                    is_victory: true,
+                    is_jackpot: true,
                     value: true
                 }
             }
@@ -26,9 +27,9 @@ export async function getMetrics(
     let totalLosses = 0;
 
     userBets?.Bet.forEach((bet) => {
-        if (bet.isVictory) {
+        if (bet.is_victory) {
             let value = bet.value.toNumber();
-            if (bet.isJackpot) {
+            if (bet.is_jackpot) {
                 totalProfit += value * 14;
             } else {
                 totalProfit += value;
