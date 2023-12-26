@@ -9,6 +9,8 @@ import { AxiosError } from "axios";
 import { UserContext } from "../../../../contexts/UserContext";
 import { priceFormatter } from "../../../../utils/formatter";
 import { SketchLogo, SmileyXEyes } from "@phosphor-icons/react";
+import useWindowDimensions from "../../../../hooks/useWindowDimensions";
+import Confetti from "react-confetti";
 
 const playerOptionsFormSchema = z.object({
     value: z.number()
@@ -70,6 +72,7 @@ export function Mines() {
     const [remainingGems, setRemainingGems] = useState<number>(20);
     const [turnedCards, setTurnedCards] = useState<number[]>([]);
     const [amount, setAmount] = useState<number>(0);
+    const [shootConfetti, setShootConfetti] = useState<boolean>(false);
 
     async function handleGame({ value }: playerOptionsFormData) {
         setAmount(value);
@@ -197,7 +200,8 @@ export function Mines() {
     }
 
     function jackpot() {
-        // TODO: não está enviando o ultimo multiplicador
+        setShootConfetti(true);
+
         shootToast({
             title: "JACKPOT",
             description: `${priceFormatter.format(amount*multiplier)} adicionado à sua carteira`,
@@ -220,6 +224,7 @@ export function Mines() {
         setNextMultiplier(1.5);
         setRemainingGems(20);
         setMinesQuantity(5);
+        setShootConfetti(false);
         setInGame(false);
     }
 
@@ -258,9 +263,20 @@ export function Mines() {
         }
     }
 
+    const { width, height } = useWindowDimensions();
+
     return (
         <Container>
-            <h1>Mines </h1>
+            <Confetti
+                width={width}
+                height={height}
+                colors={["#E52151", "#BE123C"]}
+                recycle={false}
+                run={shootConfetti}
+                gravity={.3}
+            />
+
+            <h1>Mines</h1>
 
             <div className="game-container">
                 <form onSubmit={handleSubmit(handleGame)}>

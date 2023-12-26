@@ -7,6 +7,8 @@ import { AxiosError } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../contexts/UserContext";
 import { ToastContext } from "../../../../contexts/ToastContext";
+import Confetti from "react-confetti";
+import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 
 const playerOptionsFormSchema = z.object({
     value: z.number(),
@@ -18,6 +20,7 @@ type playerOptionsFormData = z.infer<typeof playerOptionsFormSchema>;
 export function DoubleGain() {
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [shootConfetti, setShootConfetti] = useState<boolean>(false);
 
     const { register, handleSubmit, control } = useForm<playerOptionsFormData>({
         resolver: zodResolver(playerOptionsFormSchema)
@@ -25,6 +28,7 @@ export function DoubleGain() {
 
     function startGame({ value, color }: playerOptionsFormData) {
         setLoading(true);
+        setShootConfetti(false);
         sendGameOptions(value, color);
     }
 
@@ -44,11 +48,16 @@ export function DoubleGain() {
             setTimeout(() => {
                 setIsButtonDisabled(false);
                 refreshUserData();
+                
+                if (data.is_jackpot) {
+                    setShootConfetti(true);
+                }
 
                 if (Object.keys(data).includes("gains")) {
                     return shootToast({
                         title: "Vitória!",
-                        description: "Parabéns, você venceu e seu saldo foi atualizado",
+                        description:
+                            "Parabéns, você venceu e seu saldo foi atualizado",
                         color: "green"
                     });
                 }
@@ -116,8 +125,19 @@ export function DoubleGain() {
         { value: 8, class: "black" }
     ];
 
+    const { width, height } = useWindowDimensions();
+
     return (
         <Container>
+            <Confetti
+                width={width}
+                height={height}
+                colors={["#E52151", "#BE123C"]}
+                recycle={false}
+                run={shootConfetti}
+                gravity={.3}
+            />
+
             <h1>Double Gain</h1>
 
             <div className="game-container">

@@ -102,7 +102,7 @@ export async function play(req: Request, res: Response): Promise<Response> {
             message: "Unfortunately you didn't win this time",
             number: randomNumber,
             losses: handleAmount,
-            updatedBalance
+            updatedBalance,
         });
     }
 
@@ -110,6 +110,7 @@ export async function play(req: Request, res: Response): Promise<Response> {
         message: "Congratulations, you have won",
         number: randomNumber,
         gains: handleAmount,
-        updatedBalance
+        updatedBalance,
+        is_jackpot: isJackpot
     });
 }
